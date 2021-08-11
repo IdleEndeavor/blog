@@ -2,7 +2,7 @@ title: IdleEndeavor
 logo: "favicon.ico" # You can add own logo image.
 description: A Simple Blog about the Complexities of Life
 baseurl: "/reked" # The subpath of your site, e.g. /blog
-url: "https://idleendeavor.github.io" # The base hostname & protocol for your site, e.g. http://example.com
+url: "https://idleendeavor.github.io/reked" # The base hostname & protocol for your site, e.g. http://example.com
 
 # Author Settings
 author:
