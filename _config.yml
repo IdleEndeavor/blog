@@ -10,12 +10,8 @@ author:
   bio: I'm a Freelance Graphic designer and Computer Fanatic. I'm on a journey to find the answer to life.
 
 # Contact links
-twitter: https://twitter.com/ # Add your Twitter handle
-facebook: https://facebook.com/ # Add your Facebook handle
-dribbble: https://dribbble.com/ # Add your Dribbble handle
-instagram: https://instagram.com/ # Add your Instagram handle
-pinterest: https://pinterest.com/ # Add your Pinterest handle
-email: forexample@website.com # Add your Email address
+email: blog.idleendeavor@erine.email # Add your Email address
+github: github.com/idleendeavor # Add you Github Profile
 
 # Hero Section
 hero: false # To enable the section hero, use the value true. To turn off use the value false.
