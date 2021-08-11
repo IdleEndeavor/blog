@@ -8,7 +8,7 @@ Hello there!
 I’m Joshua, a Freelance Graphic Designer and Blogger. I love Computers, anything to do with Business and Productivity. 
 This Blog is a collection of my thoughts and everything I learn throughout my Idle Endeavors in Life.
 
-> Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth
+> "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth"
 > -Marcus Aurelius
 
 That’s my favorite quote by the way. I love this quote because it reminds me that everytime I feel down in life; it's my own outlook that's causing it and that I can change it as long as I'm willing to put in the work. It helps me understand that simply because someone says something negative about me; it doesn't automatically become true.
