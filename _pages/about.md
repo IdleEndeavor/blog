@@ -19,4 +19,4 @@ I've always had questions regarding my purpose in life. And so far I've come to 
 I certainly hope you have a Great time reading all of my Articles and that you gain something worthwhile from them.
 I’m open to all your suggestions, so me know of your thoughts!
 
-[eMail](mailto:blog.idleendeavor@erine.email)
+blog.idleendeavor@erine.email
