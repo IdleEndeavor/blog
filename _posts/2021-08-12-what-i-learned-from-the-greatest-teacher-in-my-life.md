@@ -5,7 +5,7 @@ date:   2021-08-12
 tags:	teachings expereince karate
 ---
 
-###Storytime
+### Storytime
 
 When I was 7 years old my father joined me up for summer classes. These classes involved Drawing, Keyboard, and Karate. I absolutely hated going to these classes because it meant I had to get out of my comfort zone at home and get ready every evening to learn. I wasn't particularly enjoying the fact that I had to study something during the holidays, you know; the time that's supposed to be freedom from schooling. Nevertheless, I went, mostly because of my father's ability to irritate me into going. He was highly skilled when it came to making you feel bad until you attended the classes.
 
@@ -21,7 +21,7 @@ I still remember my Karate classes fondly. I attended them for over 5 years. I r
 
 However, not so unlike life, when you gain something; you've got to lose something. This time around, it was the greatest teacher of my life. Sensei Joju left soon after I got my Black Belt. He'd been preparing to leave for a while but had held back because he wanted to see me and a few other students receive the Black Belt.
 
-###The Lesson
+### The Lesson
 
 They say you only understand the value of something after you lose it. And I only understood Sensei Joju had been the greatest teacher in my life after he was gone. Looking back today; I understand what made him the greatest teacher. It was his love for what he taught. The amount of passion and dedication to Karate that emanated from this man was immeasurable. His passion for the subject nurtured an interest in the subject within his students. I believe to this day that it was his love for the craft that instilled the love for Karate in me.
 
