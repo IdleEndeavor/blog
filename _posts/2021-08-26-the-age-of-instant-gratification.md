@@ -2,8 +2,7 @@
 layout: post
 title:  "The Age of Instant Gratification"
 date:   2021-08-26
-image:	images/instant-gratification.png
-tags:	instant_gratification hardwork digital_detox life life_orientation goals privacy future robot_rebellion social_media technology
+tags:	instant_gratification hardwork digital_detox life life_orientation goals privacy future
 ---
 
 ### The Problem
