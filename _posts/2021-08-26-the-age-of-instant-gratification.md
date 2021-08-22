@@ -32,13 +32,9 @@ Obviously, getting rid of technology is not the answer. This is an overcorrectio
 #### Here are a few things to try in order to practice Delayed Gratification
 
 - One of the best things to try every month is a digital detoxification day. A digital detoxification day is one day during which you abstain from using electronic entertainment devices, so no phone, tablets, computers, or gaming consoles; the only entertainment should be books or other non-electronic means. The next thing is to cultivate the habit of reading terms and conditions of everything we use and understand it, to be educated about every tool in our lives.
-
 - Make an effort to message or contact your friends and relatives at least once a day. Engage in a genuine discussion. Make it a practice to fix as many issues/fights as you can before going to bed. Because the only thing worse than a quarrel is not resolving it. A 5-minute discussion that you despise every day adds up to 35 minutes of lost time and despise in a week. This isn't going to end well. So make an effort to make each contact worthwhile.
-
 - Reevaluate what you want for yourself in the future and work toward it, letting go of quick gratifications like social networking, video games, and on-demand movies. In our hyper-connected society, it's difficult to let go of these things, and the more we push them away, the more difficult it becomes. There is no better moment than now to transform your life from one of waste and depression to one of direction and concentration.
-
 - Get a book and read it. There is no better way to condense and digest a person's whole life's experiences into a single four-hour read than through a book. Movies have to take out a lot to suit their time restrictions, programs have to stick to their budgets, and podcasts can only go as far as the presenter can. Books are awesome, and it's tough not to recommend reading as a habit.
-
 - Every day or week, meditate or journal. It's not only therapeutic, but it's also a compilation of your experiences that you may go to for comfort or assistance in the future when you're experiencing difficulties.
 
 Jordan B. Peterson's viewpoint on this subject is one that I find very compelling. It's better not to feel resentful in the future because of all we didn't do but could have done. Why not strive for what is best for us and be content with our lives? Instead of trying to conceal your sorrow and appear to be joyful, face it front on and achieve what you've always wanted to do (or at least attempt). Why not know you tried your best and succeeded or failed rather than regretting your decisions to not pursue the things you wanted to pursue and never knowing the outcome?
