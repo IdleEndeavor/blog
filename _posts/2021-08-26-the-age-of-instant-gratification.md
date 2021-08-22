@@ -2,7 +2,8 @@
 layout: post
 title:  "Instant Gratification: Terrifying is an Understatement"
 date:   2021-08-26
-tags:	instant_gratification hardwork digital_detox life life_orientation goals privacy future
+image:	images/instant-gratification.png
+tags:	instant_gratification hardwork digital_detox life life_orientation goals privacy future robot_rebellion social_media technology
 ---
 
 ### What is Instant Gratification

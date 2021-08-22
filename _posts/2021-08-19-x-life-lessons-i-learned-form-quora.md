@@ -2,6 +2,7 @@
 layout: post
 title:  "108 Life lessons I learned from Quora"
 date:   2021-08-19
+image:	images/quora-lessons.png
 tags:	experience karate learning passion dedication hard-work
 ---
 
