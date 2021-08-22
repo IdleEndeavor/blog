@@ -2,6 +2,7 @@
 layout: post
 title:  "What I learned from the greatest teacher in my life"
 date:   2021-08-12
+image:	images/greatest-teacher.png
 tags:	expereince karate learning passion dedication hard-work
 ---
 
