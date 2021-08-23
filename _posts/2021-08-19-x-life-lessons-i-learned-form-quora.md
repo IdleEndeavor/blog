@@ -188,4 +188,4 @@ I'm interested in knowing what tips you found interesting and if there are any o
 Thank you very much for reading, I'll see you the next time I'm motivated enough to write I suppose?
 
 If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
-[Friday Thought Stash](https://idleendeavor.substack.com/)
+[**Friday Thought Stash**](https://idleendeavor.substack.com/)

@@ -33,4 +33,4 @@ I miss Sensei, I wish to see him once more at his home in India one day. I want 
 Thank you very much for reading this post, I hope you found something of value from my experience. I'm interested to know if you have had such a teacher in your life. If so, then what have they taught you that has stuck with you the most? Leave the answer in the comment section below. 
 
 If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
-[Friday Thought Stash](https://idleendeavor.substack.com/)
+[**Friday Thought Stash**](https://idleendeavor.substack.com/)

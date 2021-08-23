@@ -48,4 +48,4 @@ During these moments of lockdown, all of the disadvantages of our over-reliance 
 Thank you very much for reading. I'll see you in the next write!
 
 If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
-[Friday Thought Stash](https://idleendeavor.substack.com/)
+[**Friday Thought Stash**](https://idleendeavor.substack.com/)
