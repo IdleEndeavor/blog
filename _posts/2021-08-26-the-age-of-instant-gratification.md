@@ -46,3 +46,6 @@ I'm excited for the future and everything that it will offer. If you ask my moth
 During these moments of lockdown, all of the disadvantages of our over-reliance on instant gratification and technology, in general, have become even more obvious. Despite our current degree of connectivity, people have committed suicide as a result of loneliness. So it's high time for us to rethink our life's purpose and start mapping out a path to get there. It's just better to live life slowly and profoundly; hurrying isn't worth it.
 
 Thank you very much for reading. I'll see you in the next write!
+
+If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
+[Friday Thought Stash](https://idleendeavor.substack.com/)

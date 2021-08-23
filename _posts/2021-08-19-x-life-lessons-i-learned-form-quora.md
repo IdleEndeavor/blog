@@ -186,3 +186,6 @@ _by https://www.quora.com/profile/Matthew-Brooks-293_
 That was a big list. I hope it has changed your life like it did mine. I've discovered that going through the list every month or so strengthens the memories of the tips in your mind, so you don't forget to implement them in your life.
 I'm interested in knowing what tips you found interesting and if there are any other tips not on this list that you think everyone should know. Let me know in the comment section below.
 Thank you very much for reading, I'll see you the next time I'm motivated enough to write I suppose?
+
+If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
+[Friday Thought Stash](https://idleendeavor.substack.com/)
