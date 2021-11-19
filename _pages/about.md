@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 Hello there!
-I’m Joshua, a Freelance Graphic Designer and Blogger. I love Computers, anything to do with Business and Productivity. 
+I’m Joshu, a Freelance Graphic Designer and Blogger. I love Computers, anything to do with Business and Productivity. 
 This Blog is a collection of my thoughts and everything I learn throughout my Idle Endeavors in Life.
 
 > "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth"
