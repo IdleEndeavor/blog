@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "# The Grind and the Conviction -  An Analysis of Anime"
+title:  "The Grind and the Conviction -  An Analysis of Anime"
 date:   2022-03-14
 image:	images/anime-conviction.png
 tags:	anime hard-work dedication the-grind conviction motivation inspiration goals self-improvement analysis
