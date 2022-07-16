@@ -38,4 +38,6 @@ The conclusion here is to learn to put in the effort even when we don't want to 
 
 I hope my essay on the necessity of the grind and the power of conviction aided you in your quest to become a Hokage. If not, I hope you had a good time reading it!
 
+Wanna talk to me? Feel free to send an email to *idleendeavor.s7agg@aleeas.com*
+
 Stay Safe out there and I'll see you in the next write!

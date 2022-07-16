@@ -7,15 +7,15 @@ url: "https://idleendeavor.com" # The base hostname & protocol for your site, e.
 # Author Settings
 author:
   name: Joshua George
-  bio: I'm a Freelance Graphic designer and Computer Fanatic. I'm on a journey to find the answer to life.
+  bio: A freelance graphic designer on and idle endeavor to understand the complexities of life in this simple blog
 
 # Contact links
-# email: blog.idleendeavor@erine.email # Add your Email address
+email: idleendeavor.s7agg@aleeas.com
 
 # Hero Section
-hero: false # To enable the section hero, use the value true. To turn off use the value false.
-hero-title: Raked Minimalistic Theme # Add your hero title
-hero-subtitle: For those who love simplicity # Add your hero subtitle
+hero: true # To enable the section hero, use the value true. To turn off use the value false.
+hero-title: IdleEndeavor # Add your hero title
+hero-subtitle: A simple blog about the complexitites of life # Add your hero subtitle
 hero-image: images/14.jpg # Add background image in section hero
 
 # Footer

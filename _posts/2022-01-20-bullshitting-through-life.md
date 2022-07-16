@@ -19,6 +19,3 @@ It's definitely not an easy task to try and implement something so new and diffe
 So, when you feel overwhelmed, burnt out, stressed or anxious; just sit down for a while, take a few deep breaths and start with whatever you want to or feel like doing at the moment. 'Just do it, like Nike says. Screw deadlines for those few minutes. Deadlines are set by humans, and like every other thing, system or idea developed by humans; it can be made flexible. And that's what we're gonna do!
 
 Thank you very much for reading. I'll see you in the next write!
-
-If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
-[**Friday Thought Stash**](https://idleendeavor.substack.com/)

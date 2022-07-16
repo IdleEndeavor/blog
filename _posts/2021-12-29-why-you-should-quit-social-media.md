@@ -63,6 +63,3 @@ Either way, in all circumstances; changing settings, imposing limits and general
 I hope you had something good to take away from this article. And I sincerely hope you live and happy and healthy life.
 
 Thank you very much for reading. I'll see you in the next write!
-
-If you're interested and would like to read some of my shorter, simpler thoughts and writes; do subscribe to the weekly newsletter at 
-[**Friday Thought Stash**](https://idleendeavor.substack.com/)
