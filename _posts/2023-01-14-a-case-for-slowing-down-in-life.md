@@ -3,7 +3,7 @@ layout: post
 title:  "A Case for Slowing Down in Life"
 date:   2023-01-14
 image:	images/a-case-for-slow-living.png
-tags:	learning consumption living speed productivity intentional_living essentialism minimalism
+tags:	learning consumption living speed productivity intentional_living essentialism minimalism slow-living
 ---
 
 If feel like we as people who care about being more productive are often unnecessarily obsessed with speed.
