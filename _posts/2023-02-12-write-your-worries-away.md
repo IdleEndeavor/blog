@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Write Your Worries Away"
-date:   2023-02-07
+date:   2023-02-12
 image:	images/write-your-worries.png
 tags:	life living meditation worries anxiety stress writing therapy
 ---
