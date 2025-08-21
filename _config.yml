@@ -1,13 +1,13 @@
 title: IdleEndeavor
 logo: "images/logo.png" # You can add own logo image.
-description: A Simple Blog about the Complexities of Life
+description: My simple humble blog
 baseurl: "" # The subpath of your site, e.g. /blog
 url: "https://idleendeavor.com" # The base hostname & protocol for your site, e.g. http://example.com
 
 # Author Settings
 author:
-  name: Joshua George
-  bio: A freelance graphic designer on and idle endeavor to understand the complexities of life in this simple blog
+  name: Joshua Shaji
+  bio: Documenting myself figuring my life out
 
 # Contact links
 email: idleendeavor.s7agg@aleeas.com
@@ -15,7 +15,7 @@ email: idleendeavor.s7agg@aleeas.com
 # Hero Section
 hero: true # To enable the section hero, use the value true. To turn off use the value false.
 hero-title: IdleEndeavor # Add your hero title
-hero-subtitle: A simple blog about the complexitites of life # Add your hero subtitle
+hero-subtitle: My simple humble blog # Add your hero subtitle
 hero-image: images/14.jpg # Add background image in section hero
 
 # Footer

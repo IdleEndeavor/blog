@@ -6,7 +6,7 @@ permalink: /about/
 
 Hey there,
 
-I'm Joshua, a freelance graphic designer and computer enthusiast, and this is my blog...
+I'm Joshua, a 20-something year old, here to take you with me as I document figuring my life out
 
 > "Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth"
 > <cite>Marcus Aurelius</cite>
