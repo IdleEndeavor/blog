@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "The Wattpad Romance - By The Numbers"
-date:   2026-04-27
+title: "The Wattpad Romance - By The Numbers"
+date: 2026-04-27
 image:	
-tags:	research python claude_ai project romance smut fan-fiction books reading data statistics wattpad
+tags: research python claude_ai project romance smut fan-fiction books reading data statistics wattpad
 ---
 
 > TL;DR, you can find all the data and simplified take-aways at [Wattpad Analysis](https://idleendeavor.com/wattpad-analysis.html). And yes, I am aware that AO3 is the go-to place for fan-fictions at the moment, but when I first had the idea; it was very much Wattpad. I might do the same data-analyis with AO3 at some point. (If you steal my idea, both sides of your pillow will be war for 7 years)
@@ -68,7 +68,7 @@ You can find a much more polished display of the full data at [Wattpad Analysis]
 
 I started by using Wattpad's built in list of the 25 most popular books from the Romance category (excluding foreign language entries and getting the 26th and 27th entries instead), then I _acquiring_ epub exports of the books and then wrote a python scropt which counted regex-matched vocabulary on roughly 40 different trait categories. This gave me the basic traits and a solid base to start off of. Here's all the code surrounding the vocabulary that was matched:
 
-```
+```py
     # ---- Personality vocabulary ----
     "confidence": [
         r"\bconfiden(?:t|ce|tly)\b", r"\bbold\b", r"\bassertive\b",
@@ -248,9 +248,9 @@ I started by using Wattpad's built in list of the 25 most popular books from the
     ],
 ```
 
-To collect data on subjective points, I wrote another python script which sent excerpts (opening, four mid-slices and closing) to Caude Sonnet 4.6 via their API to fill out a fixed schema covering both protagonists and the relationship: age, occupation, wealth origin, personality, baggage, arc, dynamic, power balance, POV, heat level. Didn't end up costing that much actually. Here's all the code surrounding the AI matched fields:
+To collect data on subjective points, I wrote another python script which sent excerpts (opening, four mid-slices and closing) to Claude Sonnet 4.6 via their API to fill out a fixed schema covering both protagonists and the relationship: age, occupation, wealth origin, personality, baggage, arc, dynamic, power balance, POV, heat level. Didn't end up costing that much actually. Here's all the code surrounding the AI matched fields:
 
-```
+```py
 FMC_FIELDS = [
     "fmc_age_range", "fmc_occupation", "fmc_wealth_origin",
     "fmc_personality_type", "fmc_independence", "fmc_emotional_maturity",
@@ -273,7 +273,7 @@ REL_FIELDS = [
 ]
 ```
 
-```
+```py
 Schema:
 {
   "fmc_age_range": "under_18" | "18_21" | "22_25" | "26_30" | "30_plus" | "unclear",
@@ -321,9 +321,9 @@ Excerpts from the book titled "{title}":
 
 I've included some photos from the dashboard and terminal below.
 
-![Python Script in Terminal](images/wattpad-analysis-terminal.png)
+![Python Script in Terminal](/images/wattpad-analysis-terminal.png)
 
-![Claude API Dashboard](images/wattpad-analysis-claude.png)
+![Claude API Dashboard](/images/wattpad-analysis-claude.png)
 
 There are of course, some obvious caveats. 25 isn't a random sample, it's the top of a popularity list, which measures what gets read, not what gets written. AI labels were forced into a fixed enum to keep them comparable, which sanded off nuance. Personality clusters are pulled from free-text trait fields, so they reflect both the books' tendencies and the AI's vocabulary. The sample is also completely biased towards heterosexual romance as Wattpad classifies LGBTQIA+ stories under its own category (which I might explore separately at some point). Also, unlike Wattpad books from the past, modern ones don't seem to have detailed explanations of character appearances, due to this, most of the code around apearance matching amounted to no useable data.
 
