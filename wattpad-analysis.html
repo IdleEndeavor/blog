@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Wattpad Romance, By the Numbers</title>
+<meta name="description" content="A field study of twenty-five top-read Wattpad romances. What the heroine looks like, who she ends up with, and what the prose itself says about both." />
+
+<!-- Open Graph for social shares -->
+<meta property="og:title" content="The Wattpad Romance, By the Numbers" />
+<meta property="og:description" content="A field study of twenty-five top-read Wattpad romances." />
+<meta property="og:type" content="article" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+  :root {
+    --paper:      #faf5e9;
+    --paper-2:    #f3eddc;
+    --ink:        #1f1a14;
+    --ink-soft:   #4a3f2e;
+    --ink-faint:  #8d8167;
+    --rule:       #d8cfb6;
+    --wine:       #7a1f2e;     /* heroine accent */
+    --wine-soft:  #b97480;
+    --navy:       #25425e;     /* hero accent */
+    --navy-soft:  #7896b1;
+    --gold:       #b08442;
+    --sage:       #6c8466;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 17px;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 60px 28px 80px; }
+
+  /* ---- Header ---- */
+  .header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.05;
+    margin: 0 0 18px;
+    letter-spacing: -0.015em;
+    font-variation-settings: "opsz" 144;
+  }
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--wine);
+  }
+  .deck {
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .byline {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-top: 16px;
+  }
+  .byline a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .byline a:hover { color: var(--wine); border-bottom-color: var(--wine); }
+
+  /* ---- Anchor nav ---- */
+  nav.anchor {
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    z-index: 10;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    margin: 0 -28px 30px;
+    padding: 14px 28px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: rgba(250, 245, 233, 0.92);
+  }
+  nav.anchor ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  nav.anchor a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s;
+    font-weight: 500;
+  }
+  nav.anchor a:hover { color: var(--wine); }
+
+  /* ---- Body prose ---- */
+  .lede {
+    font-size: 21px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0 0 36px;
+    font-weight: 400;
+  }
+  .lede em { color: var(--wine); font-style: italic; }
+  p { margin: 0 0 18px; }
+
+  /* ---- Section headings ---- */
+  section { margin: 70px 0 30px; scroll-margin-top: 80px; }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 1.15;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    font-variation-settings: "opsz" 144;
+  }
+  h2 .num {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--wine);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .section-blurb {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 0 0 30px;
+    font-size: 16px;
+    max-width: 640px;
+  }
+
+  /* ---- Big numbers (stat blocks) ---- */
+  .bignums {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+    margin: 30px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .bignum {
+    padding: 24px 16px;
+    text-align: center;
+    border-right: 1px solid var(--rule);
+  }
+  .bignum:last-child { border-right: none; }
+  @media (max-width: 640px) {
+    .bignum { border-right: none; border-bottom: 1px solid var(--rule); padding: 18px 16px; }
+    .bignum:last-child { border-bottom: none; }
+  }
+  .bignum .v {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--wine);
+    line-height: 1;
+    font-variation-settings: "opsz" 144;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .bignum .v.navy { color: var(--navy); }
+  .bignum .k {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  /* ---- Filter bar ---- */
+  .filter-bar {
+    margin: 30px 0;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+  }
+  .filter-bar .label {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+  .filter-bar select, .filter-bar input[type=text] {
+    padding: 7px 12px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .filter-bar select:hover, .filter-bar input:hover { border-color: var(--ink-soft); }
+  .filter-bar .count {
+    margin-left: auto;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+  }
+  .filter-bar .reset {
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 7px 14px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    border-radius: 3px;
+    text-transform: lowercase;
+    font-style: italic;
+  }
+  .filter-bar .reset:hover { background: var(--ink-soft); color: var(--paper); border-color: var(--ink-soft); }
+
+  /* ---- Chart cards ---- */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-1 { display: block; }
+  @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--paper-2);
+    border-radius: 4px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+  }
+  .card.heroine { border-left: 3px solid var(--wine); }
+  .card.hero { border-left: 3px solid var(--navy); }
+  .card h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 4px;
+    font-style: italic;
+  }
+  .card .cap {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .chart-wrap { position: relative; height: 280px; }
+  .chart-wrap.tall { height: 380px; }
+  .chart-wrap.short { height: 200px; }
+
+  /* ---- Side-by-side comparison ---- */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 24px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) { .compare { grid-template-columns: 1fr; } }
+  .compare .col {
+    padding: 22px 24px;
+  }
+  .compare .col.heroine {
+    border-right: 1px solid var(--rule);
+  }
+  @media (max-width: 720px) {
+    .compare .col.heroine { border-right: none; border-bottom: 1px solid var(--rule); }
+  }
+  .compare .col h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+  .compare .col.heroine h3 { color: var(--wine); }
+  .compare .col.hero h3 { color: var(--navy); }
+  .compare .traits {
+    line-height: 2;
+  }
+  .compare .traits span {
+    display: inline-block;
+    margin-right: 14px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+  .compare .heroine .traits span { color: var(--wine); }
+  .compare .hero .traits span { color: var(--navy); }
+
+  /* ---- Couple cards ---- */
+  .couples { display: grid; gap: 16px; margin-top: 12px; }
+  .couple {
+    background: var(--paper-2);
+    border-radius: 4px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  @media (max-width: 720px) { .couple { grid-template-columns: 1fr; gap: 14px; } }
+  .couple .col-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .couple .col-title .meta {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  .couple .char .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .couple .char.heroine .label { color: var(--wine); }
+  .couple .char.hero .label { color: var(--navy); }
+  .couple .char .row {
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    margin-bottom: 4px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .couple .char .row b {
+    font-weight: 500;
+    color: var(--ink-faint);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+
+  /* ---- Methodology callout ---- */
+  .methodology {
+    margin: 60px 0;
+    padding: 28px 32px;
+    background: var(--paper-2);
+    border-radius: 4px;
+    border-left: 3px solid var(--gold);
+  }
+  .methodology h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+  .methodology p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+  .methodology p:last-child { margin-bottom: 0; }
+
+  /* ---- Footer / hidden upload ---- */
+  .footer {
+    margin-top: 80px;
+    padding-top: 30px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+  .footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .footer a:hover { color: var(--wine); }
+  .footer .upload-hint {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .footer .upload-hint label {
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+  .footer .upload-hint input { display: none; }
+
+  /* ---- Loading & error states ---- */
+  .status {
+    text-align: center;
+    padding: 60px 20px;
+    font-style: italic;
+    color: var(--ink-faint);
+  }
+  .status.error {
+    color: var(--wine);
+    font-style: normal;
+    font-family: 'Inter', sans-serif;
+  }
+  .status .spinner {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border: 2px solid var(--rule);
+    border-top-color: var(--wine);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hidden { display: none !important; }
+
+  /* Subtle pull-quote / aside */
+  .pullquote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    border-left: 3px solid var(--wine);
+    padding: 8px 0 8px 24px;
+    margin: 30px 0 30px 12px;
+    max-width: 640px;
+  }
+
+  /* Trait list (replaces personality cluster bar) */
+  .trait-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 8px;
+  }
+  .trait-list .trait {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .trait-list .trait .n {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+  .heroine .trait-list .trait { color: var(--wine); }
+  .hero .trait-list .trait { color: var(--navy); }
+
+  /* Composite section — the "ideal type" portraits */
+  .composite-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 30px 0;
+  }
+  @media (max-width: 720px) { .composite-grid { grid-template-columns: 1fr; } }
+
+  .composite-card {
+    background: var(--paper-2);
+    border-radius: 4px;
+    padding: 28px 30px 26px;
+    position: relative;
+  }
+  .composite-card.heroine { border-top: 3px solid var(--wine); }
+  .composite-card.hero { border-top: 3px solid var(--navy); }
+  .composite-card .role {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .composite-card.heroine .role { color: var(--wine); }
+  .composite-card.hero .role { color: var(--navy); }
+  .composite-card .one-liner {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    line-height: 1.4;
+    font-style: italic;
+    margin: 0 0 22px;
+    color: var(--ink);
+  }
+  .composite-card .one-liner em {
+    font-style: normal;
+    font-weight: 600;
+  }
+  .composite-card.heroine .one-liner em { color: var(--wine); }
+  .composite-card.hero .one-liner em { color: var(--navy); }
+
+  .composite-card dl {
+    margin: 0 0 22px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 6px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+  }
+  .composite-card dt {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    align-self: baseline;
+    padding-top: 2px;
+  }
+  .composite-card dd {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .composite-card dd .pct {
+    color: var(--ink-faint);
+    font-size: 11px;
+    margin-left: 4px;
+  }
+
+  .composite-card .traits-row {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    margin-top: 4px;
+  }
+  .composite-card .traits-row .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .composite-card .traits-row .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+  .composite-card .traits-row .pill {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    padding: 3px 11px;
+    border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .composite-card.heroine .traits-row .pill { color: var(--wine); }
+  .composite-card.hero .traits-row .pill { color: var(--navy); }
+
+  /* Caveat box for the composite section */
+  .caveat-box {
+    background: transparent;
+    border-left: 2px solid var(--ink-faint);
+    padding: 4px 0 4px 18px;
+    margin: 30px 0 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    max-width: 720px;
+  }
+  .caveat-box .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============================================================== -->
+  <!-- HEADER                                                          -->
+  <!-- ============================================================== -->
+  <header class="header">
+    <h1>The Wattpad Romance,<br/><em>By the Numbers</em></h1>
+    <p class="deck">A look at twenty-five top-read romances on the platform. What the heroine looks like, who she ends up with, and what the prose itself says about both.</p>
+    <div class="byline">A companion to the article on <a href="https://idleendeavor.com/2026/04/27/the-wattpad-romance-by-the-numbers/">IdleEndeavor</a></div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- STICKY ANCHOR NAV                                               -->
+  <!-- ============================================================== -->
+  <nav class="anchor">
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#dynamic">Dynamics</a></li>
+      <li><a href="#heroine">Heroine</a></li>
+      <li><a href="#hero">Hero</a></li>
+      <li><a href="#pair">The Pair</a></li>
+      <li><a href="#composite">Composite</a></li>
+      <li><a href="#books">The Books</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============================================================== -->
+  <!-- LOADING / ERROR                                                 -->
+  <!-- ============================================================== -->
+  <div id="status" class="status">
+    <span class="spinner"></span>Loading the data…
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- DASHBOARD                                                       -->
+  <!-- ============================================================== -->
+  <main id="dashboard" class="hidden">
+
+    <!-- Overview -->
+    <section id="overview">
+      <p class="lede" id="lede">
+        <!-- filled by JS -->
+      </p>
+
+      <div class="filter-bar">
+        <span class="label">Filter</span>
+        <select id="filter-rel-dynamic"><option value="">All dynamics</option></select>
+        <select id="filter-rel-heat"><option value="">All heat levels</option></select>
+        <select id="filter-fmc-age"><option value="">All heroine ages</option></select>
+        <select id="filter-mmc-age"><option value="">All hero ages</option></select>
+        <input type="text" id="filter-search" placeholder="Search title…" />
+        <span class="count" id="filter-count">— books</span>
+        <button class="reset" id="reset-filters">reset</button>
+      </div>
+
+      <div class="bignums" id="bignums"></div>
+    </section>
+
+    <!-- Dynamics -->
+    <section id="dynamic">
+      <h2><span class="num">§ 01</span>Who ends up with whom, and how</h2>
+      <p class="section-blurb">The setup that drives each romance: the trope, the heat level, the lens we read it through, and the question of who in the relationship holds the cards.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Relationship dynamics</h3>
+          <div class="cap">The trope each book runs on.</div>
+          <div class="chart-wrap"><canvas id="chart-rel-dynamic"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Power balance</h3>
+          <div class="cap">Who in the couple holds the leverage?</div>
+          <div class="chart-wrap"><canvas id="chart-rel-power"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Heat level</h3>
+          <div class="cap">Despite the 18+ tags, most are not explicit.</div>
+          <div class="chart-wrap short"><canvas id="chart-rel-heat"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Point of view</h3>
+          <div class="cap">Whose head are we in?</div>
+          <div class="chart-wrap short"><canvas id="chart-rel-pov"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Heroine -->
+    <section id="heroine">
+      <h2><span class="num">§ 02</span>The heroine</h2>
+      <p class="section-blurb">Demographics, occupation, and the words the prose actually uses to describe her.</p>
+
+      <div class="grid-2">
+        <div class="card heroine">
+          <h3>Age range</h3>
+          <div class="cap">How old is she when the story starts?</div>
+          <div class="chart-wrap"><canvas id="chart-fmc-age"></canvas></div>
+        </div>
+        <div class="card heroine">
+          <h3>Occupation</h3>
+          <div class="cap">"Student" runs away with it.</div>
+          <div class="chart-wrap"><canvas id="chart-fmc-occupation"></canvas></div>
+        </div>
+        <div class="card heroine">
+          <h3>Wealth origin</h3>
+          <div class="cap">Where she's coming from, financially.</div>
+          <div class="chart-wrap"><canvas id="chart-fmc-wealth"></canvas></div>
+        </div>
+        <div class="card heroine">
+          <h3>Independence × experience</h3>
+          <div class="cap">How self-sufficient is she, and how much has she lived?</div>
+          <div class="chart-wrap"><canvas id="chart-fmc-independence"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card heroine">
+        <h3>The words used to describe her</h3>
+        <div class="cap">Pulled from the AI's free-text trait fields across all books (single words, ordered by frequency)</div>
+        <div class="trait-list heroine" id="trait-list-fmc"></div>
+      </div>
+    </section>
+
+    <!-- Hero (renamed from Love Interest) -->
+    <section id="hero">
+      <h2><span class="num">§ 03</span>The hero</h2>
+      <p class="section-blurb">The man at the other end of the dynamic: older, wealthier, and described in a remarkably narrow vocabulary.</p>
+
+      <div class="grid-2">
+        <div class="card hero">
+          <h3>Age range</h3>
+          <div class="cap">Older, almost without exception.</div>
+          <div class="chart-wrap"><canvas id="chart-mmc-age"></canvas></div>
+        </div>
+        <div class="card hero">
+          <h3>Occupation</h3>
+          <div class="cap">Often unstated; when stated, often a kind of boss.</div>
+          <div class="chart-wrap"><canvas id="chart-mmc-occupation"></canvas></div>
+        </div>
+        <div class="card hero">
+          <h3>Wealth origin</h3>
+          <div class="cap">"Very wealthy" dominates.</div>
+          <div class="chart-wrap"><canvas id="chart-mmc-wealth"></canvas></div>
+        </div>
+        <div class="card hero">
+          <h3>Independence × experience</h3>
+          <div class="cap">"Fiercely independent" and "experienced" — the canonical box.</div>
+          <div class="chart-wrap"><canvas id="chart-mmc-independence"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card hero">
+        <h3>The words used to describe him</h3>
+        <div class="cap">Same extraction, same method. The cluster is tighter than the heroine's.</div>
+        <div class="trait-list hero" id="trait-list-mmc"></div>
+      </div>
+    </section>
+
+    <!-- The pair -->
+    <section id="pair">
+      <h2><span class="num">§ 04</span>The pair</h2>
+      <p class="section-blurb">Pairings put the asymmetry in plain view: the age gaps, the wealth gaps, and the matrices that show what kinds of couples the platform's most-read books are pairing up.</p>
+
+      <p class="pullquote">In the wealthier-hero half of the data, the heroine is just as likely to be wealthy herself as poor. the gap is more about the hero's starting point than the heroine's.</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Age pairings</h3>
+          <div class="cap">Heroine age (rows) by hero age (segments).</div>
+          <div class="chart-wrap tall"><canvas id="chart-age-pair"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Wealth pairings</h3>
+          <div class="cap">Heroine origin (rows) by hero origin (segments).</div>
+          <div class="chart-wrap tall"><canvas id="chart-wealth-pair"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Heat &amp; tension vocabulary</h3>
+        <div class="cap">Average occurrences per 10,000 words across the filtered books.</div>
+        <div class="chart-wrap"><canvas id="chart-heat-kw"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Composite — the "ideal type" portraits -->
+    <section id="composite">
+      <h2><span class="num">§ 05</span>The composite</h2>
+      <p class="section-blurb">If you stitched together the modal values across all twenty-five books, the average heroine and the average hero each settle into a fairly specific portrait. Here is what those composites look like, treated like character sheets.</p>
+
+      <div class="composite-grid">
+
+        <div class="composite-card heroine">
+          <div class="role">The Composite Heroine</div>
+          <p class="one-liner" id="composite-fmc-oneliner">
+            <!-- filled by JS -->
+          </p>
+          <dl id="composite-fmc-dl"></dl>
+          <div class="traits-row">
+            <div class="label">Top traits in the prose</div>
+            <div class="pills" id="composite-fmc-pills"></div>
+          </div>
+        </div>
+
+        <div class="composite-card hero">
+          <div class="role">The Composite Hero</div>
+          <p class="one-liner" id="composite-mmc-oneliner">
+            <!-- filled by JS -->
+          </p>
+          <dl id="composite-mmc-dl"></dl>
+          <div class="traits-row">
+            <div class="label">Top traits in the prose</div>
+            <div class="pills" id="composite-mmc-pills"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <aside class="caveat-box">
+        <div class="label">A necessary caveat</div>
+        <p style="margin:0">This is the &ldquo;most attractive&rdquo; composite only in a narrow sense: these are the traits that show up most often in the books readers have rewarded with the most reads. That is fictional preference, not real-world preference. Readers of these books are mostly women, mostly young, and the genre is built on a specific kind of fantasy that benefits from clear power asymmetries and emotional arcs that resolve cleanly.</p>
+      </aside>
+    </section>
+
+    <!-- Books table -->
+    <section id="books">
+      <h2><span class="num">§ 06</span>The books</h2>
+      <p class="section-blurb">Side-by-side cards for every book in the current filter — heroine on the left, hero on the right, dynamic up top.</p>
+      <div class="couples" id="couples"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div>A companion to the article on <a href="https://idleendeavor.com/2026/04/27/the-wattpad-romance-by-the-numbers/">IdleEndeavor</a></div>
+    <!-- <div class="upload-hint">
+      Data not loading? <label>upload a CSV manually<input type="file" id="csv-upload" accept=".csv" /></label>
+    </div> -->
+  </footer>
+
+</div>
+
+<script>
+'use strict';
+
+// =====================================================================
+// Configuration — change these for your deployment
+// =====================================================================
+// Where to fetch the CSV from. Site-absolute path so it works whether the
+// page is served at /wattpad-analysis.html, /wattpad-analysis/, or anywhere
+// else on idleendeavor.com.
+const CSV_URL = '/images/results.csv';
+
+// =====================================================================
+// State
+// =====================================================================
+let allRows = [];
+let filtered = [];
+let charts = {};
+
+// Palette
+const WINE = '#7a1f2e';
+const WINE_SOFT = '#b97480';
+const NAVY = '#25425e';
+const NAVY_SOFT = '#7896b1';
+const GOLD = '#b08442';
+const SAGE = '#6c8466';
+const INK = '#1f1a14';
+const INK_FAINT = '#8d8167';
+
+const PALETTE_HEROINE = [WINE, WINE_SOFT, '#8a3744', '#a05566', '#5a0d18', '#c89098'];
+const PALETTE_HERO = [NAVY, NAVY_SOFT, '#3d5a78', '#5a7796', '#142745', '#9bafc4'];
+const PALETTE_NEUTRAL = [GOLD, SAGE, '#8a4a6b', '#6b8a4a', '#4a6b8a', '#a05a3a', '#7a6a4a'];
+
+// Ordering for ordinal fields
+const AGE_ORDER = ['under_18','18_21','22_25','26_30','30_plus'];
+const WEALTH_ORDER = ['poor','working_class','middle_class','wealthy','very_wealthy'];
+const HEAT_ORDER = ['clean','mild','steamy','explicit'];
+const POWER_ORDER = ['fmc_higher','balanced','shifting','mmc_higher'];
+
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.color = INK;
+Chart.defaults.borderColor = 'rgba(31, 26, 20, 0.10)';
+
+// =====================================================================
+// CSV parsing — RFC-4180 ish
+// =====================================================================
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', i = 0, inQuotes = false;
+  while (i < text.length) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i+1] === '"') { field += '"'; i += 2; continue; }
+      if (c === '"') { inQuotes = false; i++; continue; }
+      field += c; i++;
+    } else {
+      if (c === '"') { inQuotes = true; i++; continue; }
+      if (c === ',') { row.push(field); field = ''; i++; continue; }
+      if (c === '\r') { i++; continue; }
+      if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; continue; }
+      field += c; i++;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  if (!rows.length) return [];
+  const header = rows[0];
+  return rows.slice(1).filter(r => r.some(v => v !== '')).map(r => {
+    const obj = {};
+    header.forEach((h, idx) => obj[h] = r[idx] ?? '');
+    return obj;
+  });
+}
+
+// =====================================================================
+// Helpers
+// =====================================================================
+function countBy(arr, key, includeUnclear = false) {
+  const m = new Map();
+  arr.forEach(r => {
+    const v = (r[key] || '').toString().trim();
+    if (!v) return;
+    if (!includeUnclear && v === 'unclear') return;
+    m.set(v, (m.get(v) || 0) + 1);
+  });
+  return [...m.entries()].sort((a,b) => b[1] - a[1]);
+}
+
+function uniqueValues(rows, key) {
+  const s = new Set();
+  rows.forEach(r => {
+    const v = (r[key] || '').trim();
+    if (v && v !== 'unclear') s.add(v);
+  });
+  return [...s].sort();
+}
+
+function mean(nums) {
+  if (!nums.length) return 0;
+  return nums.reduce((a,b) => a+b, 0) / nums.length;
+}
+
+function pretty(snake) {
+  if (!snake || snake === 'unclear') return 'Unclear';
+  return snake.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function orderBy(arr, order) {
+  return arr.slice().sort((a,b) => {
+    const ai = order.indexOf(a[0]);
+    const bi = order.indexOf(b[0]);
+    if (ai === -1 && bi === -1) return 0;
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
+}
+
+function pct(n, total) { return total ? Math.round(n / total * 100) : 0; }
+
+// Trait extraction — split free text on common separators, lowercase, count words.
+// Stopwords: tokens that are too generic to be useful, or that come from the
+// "unclear"/"none" category.
+const TRAIT_STOPWORDS = new Set([
+  'unclear','none','very','quite','somewhat','rather','fairly',
+  'and','or','but','also','too','often','sometimes','still',
+  'a','an','the','of','for','with','to','in','on'
+]);
+
+function extractTraits(rows, fields) {
+  const counts = new Map();
+  rows.forEach(r => {
+    const blob = fields.map(f => r[f] || '').join(', ').toLowerCase();
+    // Split on punctuation that separates traits
+    const parts = blob.split(/[,;_/]+|\s+\(|\)/);
+    parts.forEach(p => {
+      const t = p.trim();
+      if (!t) return;
+      if (TRAIT_STOPWORDS.has(t)) return;
+      // Drop very long phrases (probably a sentence not a trait)
+      if (t.length > 30) return;
+      // Normalise common variants
+      let normalised = t;
+      if (normalised === 'brooding') normalised = 'broody';
+      if (normalised === 'caring') normalised = 'kind';
+      counts.set(normalised, (counts.get(normalised) || 0) + 1);
+    });
+  });
+  return [...counts.entries()]
+    .filter(([_, n]) => n >= 2)  // require 2+ books for a trait to appear
+    .sort((a,b) => b[1] - a[1]);
+}
+
+// =====================================================================
+// Filtering
+// =====================================================================
+function applyFilters() {
+  const f = id => document.getElementById(id).value;
+  const rd = f('filter-rel-dynamic');
+  const rh = f('filter-rel-heat');
+  const fa = f('filter-fmc-age');
+  const ma = f('filter-mmc-age');
+  const search = f('filter-search').toLowerCase();
+
+  filtered = allRows.filter(r => {
+    if (rd && r.rel_dynamic !== rd) return false;
+    if (rh && r.rel_heat_level !== rh) return false;
+    if (fa && r.fmc_age_range !== fa) return false;
+    if (ma && r.mmc_age_range !== ma) return false;
+    if (search && !(r.title || '').toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  const n = filtered.length;
+  document.getElementById('filter-count').textContent = `${n} of ${allRows.length} book${allRows.length === 1 ? '' : 's'}`;
+  render();
+}
+
+function populateFilters() {
+  const fields = [
+    ['filter-rel-dynamic', 'rel_dynamic', 'All dynamics'],
+    ['filter-rel-heat', 'rel_heat_level', 'All heat levels', HEAT_ORDER],
+    ['filter-fmc-age', 'fmc_age_range', 'All heroine ages', AGE_ORDER],
+    ['filter-mmc-age', 'mmc_age_range', 'All hero ages', AGE_ORDER],
+  ];
+  fields.forEach(([id, key, placeholder, order]) => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = `<option value="">${placeholder}</option>`;
+    let vals = uniqueValues(allRows, key);
+    if (order) {
+      vals.sort((a,b) => {
+        const ai = order.indexOf(a), bi = order.indexOf(b);
+        if (ai === -1 && bi === -1) return a.localeCompare(b);
+        if (ai === -1) return 1; if (bi === -1) return -1;
+        return ai - bi;
+      });
+    }
+    vals.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = pretty(v);
+      sel.appendChild(o);
+    });
+    sel.addEventListener('change', applyFilters);
+  });
+  document.getElementById('filter-search').addEventListener('input', applyFilters);
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    ['filter-rel-dynamic','filter-rel-heat','filter-fmc-age','filter-mmc-age']
+      .forEach(id => document.getElementById(id).value = '');
+    document.getElementById('filter-search').value = '';
+    applyFilters();
+  });
+}
+
+// =====================================================================
+// Lede + big numbers
+// =====================================================================
+function renderLede() {
+  const r = filtered;
+  if (!r.length) {
+    document.getElementById('lede').textContent = 'No books match the current filter.';
+    return;
+  }
+  const total = r.length;
+  const topDyn = countBy(r, 'rel_dynamic')[0];
+  const wealthyHero = r.filter(x => x.mmc_wealth_origin === 'very_wealthy' || x.mmc_wealth_origin === 'wealthy').length;
+  const ageGap = r.filter(x => {
+    const fa = AGE_ORDER.indexOf(x.fmc_age_range);
+    const ma = AGE_ORDER.indexOf(x.mmc_age_range);
+    return fa !== -1 && ma !== -1 && (ma - fa) >= 1;
+  }).length;
+  const mmcHigher = r.filter(x => x.mmc_wealth_origin && x.fmc_wealth_origin && WEALTH_ORDER.indexOf(x.mmc_wealth_origin) > WEALTH_ORDER.indexOf(x.fmc_wealth_origin)).length;
+
+  // Just the headline sentence for the lede paragraph
+  document.getElementById('lede').innerHTML =
+    `Across ${total} top-read romances, the hero is older than the heroine in <em>${pct(ageGap, total)}%</em> of books, ` +
+    `wealthier than her in <em>${pct(mmcHigher, total)}%</em>, and in the wealthiest tier outright in <em>${pct(wealthyHero, total)}%</em>. ` +
+    `The most common dynamic is <em>${pretty(topDyn ? topDyn[0] : '')}</em>.`;
+
+  // Big numbers strip
+  const innocent = r.filter(x => x.fmc_experience_level === 'innocent' || x.fmc_experience_level === 'inexperienced').length;
+  const fierceMmc = r.filter(x => x.mmc_independence === 'fiercely_independent').length;
+  const explicit = r.filter(x => x.rel_heat_level === 'explicit').length;
+  const alternating = r.filter(x => x.rel_pov === 'alternating').length;
+
+  const blocks = [
+    { v: total, k: 'Books in view' },
+    { v: pct(ageGap, total) + '%', k: 'Hero is older than heroine', cls: '' },
+    { v: pct(wealthyHero, total) + '%', k: 'Hero is wealthy or very wealthy', cls: 'navy' },
+    { v: pct(innocent, total) + '%', k: 'Heroine is innocent or inexperienced', cls: '' },
+    { v: pct(alternating, total) + '%', k: 'Books with alternating POV', cls: '' },
+    { v: pct(explicit, total) + '%', k: 'Books that are sexually explicit', cls: '' },
+  ];
+
+  document.getElementById('bignums').innerHTML = blocks.map(b => `
+    <div class="bignum">
+      <span class="v ${b.cls || ''}">${b.v}</span>
+      <span class="k">${b.k}</span>
+    </div>
+  `).join('');
+}
+
+// =====================================================================
+// Charts
+// =====================================================================
+function destroyChart(id) {
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function mkBar(id, labels, data, opts = {}) {
+  destroyChart(id);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  const palette = opts.palette || PALETTE_NEUTRAL;
+  const single = opts.single || null;
+  charts[id] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels.map(pretty),
+      datasets: [{
+        data,
+        backgroundColor: single ? labels.map(() => single) : labels.map((_, i) => palette[i % palette.length]),
+        borderColor: 'rgba(0,0,0,0)',
+        borderWidth: 0,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      indexAxis: opts.horizontal ? 'y' : 'x',
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: INK,
+          padding: 10,
+          titleFont: { family: 'Fraunces', size: 14, weight: '500' },
+          bodyFont: { family: 'Inter', size: 12 },
+        },
+      },
+      scales: {
+        x: { grid: { color: 'rgba(31,26,20,0.05)' }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: 'rgba(31,26,20,0.05)' }, ticks: { font: { size: 11 } } },
+      }
+    }
+  });
+}
+
+function mkDoughnut(id, labels, data, palette) {
+  destroyChart(id);
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels.map(pretty),
+      datasets: [{
+        data,
+        backgroundColor: labels.map((_, i) => (palette || PALETTE_NEUTRAL)[i % (palette || PALETTE_NEUTRAL).length]),
+        borderColor: '#faf5e9',
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      cutout: '58%',
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: { boxWidth: 11, font: { size: 11 }, padding: 12 },
+        },
+        tooltip: { backgroundColor: INK, padding: 10 },
+      },
+    }
+  });
+}
+
+function mkStackedExp(id, prefixField, accentDark, accentMid, accentLight) {
+  // independence on x-axis, experience stacked
+  destroyChart(id);
+  const indOrder = ['dependent','moderate','independent','fiercely_independent'];
+  const expOrder = ['innocent','inexperienced','average','experienced'];
+  const counts = {};
+  indOrder.forEach(i => counts[i] = Object.fromEntries(expOrder.map(e => [e, 0])));
+  filtered.forEach(r => {
+    const ind = r[`${prefixField}_independence`];
+    const exp = r[`${prefixField}_experience_level`];
+    if (indOrder.includes(ind) && expOrder.includes(exp)) counts[ind][exp]++;
+  });
+  const colors = [accentLight, accentMid, accentDark, INK_FAINT];
+  const datasets = expOrder.map((e, i) => ({
+    label: pretty(e),
+    data: indOrder.map(ind => counts[ind][e]),
+    backgroundColor: colors[i],
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+  }));
+  charts[id] = new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels: indOrder.map(pretty), datasets },
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } },
+        tooltip: { backgroundColor: INK, padding: 10 }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { stacked: true, grid: { color: 'rgba(31,26,20,0.05)' }, ticks: { stepSize: 1, font: { size: 11 } } },
+      }
+    }
+  });
+}
+
+function mkPairMatrix(id, fmcKey, mmcKey, order, palette) {
+  destroyChart(id);
+  const counts = {};
+  order.forEach(f => counts[f] = Object.fromEntries(order.map(m => [m, 0])));
+  filtered.forEach(r => {
+    const fv = r[fmcKey], mv = r[mmcKey];
+    if (order.includes(fv) && order.includes(mv)) counts[fv][mv]++;
+  });
+  const datasets = order.map((m, i) => ({
+    label: pretty(m),
+    data: order.map(f => counts[f][m]),
+    backgroundColor: palette[i % palette.length],
+    borderColor: 'rgba(0,0,0,0)',
+    borderWidth: 0,
+  }));
+  charts[id] = new Chart(document.getElementById(id), {
+    type: 'bar',
+    data: { labels: order.map(pretty), datasets },
+    options: {
+      indexAxis: 'y',
+      maintainAspectRatio: false,
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } },
+        tooltip: { backgroundColor: INK, padding: 10 },
+      },
+      scales: {
+        x: { stacked: true, grid: { color: 'rgba(31,26,20,0.05)' }, ticks: { stepSize: 1, font: { size: 11 } } },
+        y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } },
+      }
+    }
+  });
+}
+
+function renderRelCharts() {
+  if (!filtered.length) return;
+  const dyn = countBy(filtered, 'rel_dynamic').slice(0, 8);
+  mkBar('chart-rel-dynamic', dyn.map(x=>x[0]), dyn.map(x=>x[1]), { horizontal: true, palette: PALETTE_NEUTRAL });
+
+  const power = orderBy(countBy(filtered, 'rel_power_balance'), POWER_ORDER);
+  mkDoughnut('chart-rel-power', power.map(x=>x[0]), power.map(x=>x[1]), [WINE, GOLD, SAGE, NAVY]);
+
+  const heat = orderBy(countBy(filtered, 'rel_heat_level'), HEAT_ORDER);
+  mkBar('chart-rel-heat', heat.map(x=>x[0]), heat.map(x=>x[1]), { single: GOLD });
+
+  const pov = countBy(filtered, 'rel_pov');
+  mkDoughnut('chart-rel-pov', pov.map(x=>x[0]), pov.map(x=>x[1]), PALETTE_NEUTRAL);
+}
+
+function renderCharCharts(prefix) {
+  if (!filtered.length) return;
+  const palette = prefix === 'fmc' ? PALETTE_HEROINE : PALETTE_HERO;
+  const accent = prefix === 'fmc' ? WINE : NAVY;
+
+  const age = orderBy(countBy(filtered, `${prefix}_age_range`), AGE_ORDER);
+  mkBar(`chart-${prefix}-age`, age.map(x=>x[0]), age.map(x=>x[1]), { single: accent });
+
+  const occ = countBy(filtered, `${prefix}_occupation`, true).slice(0, 7);
+  // Truncate long occupation labels for display
+  const occLabels = occ.map(x => x[0].length > 32 ? x[0].slice(0, 29) + '…' : x[0]);
+  mkBar(`chart-${prefix}-occupation`, occLabels, occ.map(x=>x[1]), { horizontal: true, palette });
+
+  const wealth = orderBy(countBy(filtered, `${prefix}_wealth_origin`), WEALTH_ORDER);
+  mkDoughnut(`chart-${prefix}-wealth`, wealth.map(x=>x[0]), wealth.map(x=>x[1]), palette);
+
+  if (prefix === 'fmc') {
+    mkStackedExp(`chart-${prefix}-independence`, prefix, WINE, WINE_SOFT, '#ddc3c8');
+  } else {
+    mkStackedExp(`chart-${prefix}-independence`, prefix, NAVY, NAVY_SOFT, '#cdd9e3');
+  }
+}
+
+function renderTraitList(prefix) {
+  const fields = [`${prefix}_personality_type`, `${prefix}_dominant_traits`];
+  const traits = extractTraits(filtered, fields).slice(0, 18);
+  const el = document.getElementById(`trait-list-${prefix}`);
+  if (!traits.length) {
+    el.innerHTML = '<em style="color:var(--ink-faint)">No traits to display.</em>';
+    return;
+  }
+  const max = traits[0][1];
+  el.innerHTML = traits.map(([t, n]) => {
+    const size = 14 + Math.round((n / max) * 14);
+    const opacity = 0.55 + (n / max) * 0.45;
+    return `<span class="trait" style="font-size:${size}px; opacity:${opacity.toFixed(2)}">${t}<span class="n">${n}</span></span>`;
+  }).join('');
+}
+
+function renderPairCharts() {
+  if (!filtered.length) return;
+  mkPairMatrix('chart-age-pair', 'fmc_age_range', 'mmc_age_range', AGE_ORDER, PALETTE_HERO);
+  mkPairMatrix('chart-wealth-pair', 'fmc_wealth_origin', 'mmc_wealth_origin', WEALTH_ORDER, PALETTE_HERO);
+
+  const heatKeys = ['kw_heat_kiss','kw_heat_explicit','kw_heat_tension','kw_dyn_protective','kw_dyn_enemies','kw_dyn_bad_boy','kw_dominance','kw_submission'];
+  const avgs = heatKeys.map(k => {
+    const rates = filtered.map(r => (+r[k] || 0) / ((+r.text_length || 1) / 10000));
+    return [k.replace(/^kw_/, ''), +mean(rates).toFixed(2)];
+  }).sort((a,b) => b[1] - a[1]);
+  mkBar('chart-heat-kw', avgs.map(x=>x[0]), avgs.map(x=>x[1]), { horizontal: true, palette: PALETTE_NEUTRAL });
+}
+
+// =====================================================================
+// Couple cards
+// =====================================================================
+function renderCouples() {
+  const el = document.getElementById('couples');
+  if (!filtered.length) {
+    el.innerHTML = '<div class="status">No books match the current filter.</div>';
+    return;
+  }
+
+  const safe = (v) => (v || '—');
+
+  el.innerHTML = filtered.map(r => `
+    <div class="couple">
+      <div class="col-title">
+        ${escapeHtml(r.title || '—')}
+        <span class="meta">
+          ${escapeHtml(pretty(r.rel_dynamic))} · ${escapeHtml(pretty(r.rel_heat_level))}<br/>
+          ${escapeHtml(pretty(r.rel_power_balance))} · ${escapeHtml(pretty(r.rel_pov))}
+        </span>
+      </div>
+      <div class="char heroine">
+        <div class="label">Heroine</div>
+        <div class="row"><b>Age</b>${escapeHtml(pretty(r.fmc_age_range))}</div>
+        <div class="row"><b>Job</b>${escapeHtml(safe(r.fmc_occupation))}</div>
+        <div class="row"><b>Wealth</b>${escapeHtml(pretty(r.fmc_wealth_origin))}</div>
+        <div class="row"><b>Type</b>${escapeHtml(pretty(r.fmc_personality_type))}</div>
+        <div class="row" style="margin-top:8px"><b>Arc</b>${escapeHtml(safe(r.fmc_arc))}</div>
+      </div>
+      <div class="char hero">
+        <div class="label">Hero</div>
+        <div class="row"><b>Age</b>${escapeHtml(pretty(r.mmc_age_range))}</div>
+        <div class="row"><b>Job</b>${escapeHtml(safe(r.mmc_occupation))}</div>
+        <div class="row"><b>Wealth</b>${escapeHtml(pretty(r.mmc_wealth_origin))}</div>
+        <div class="row"><b>Type</b>${escapeHtml(pretty(r.mmc_personality_type))}</div>
+        <div class="row" style="margin-top:8px"><b>Arc</b>${escapeHtml(safe(r.mmc_arc))}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// =====================================================================
+// =====================================================================
+// Composite — modal-value portrait of heroine & hero
+// =====================================================================
+function modalValue(rows, key) {
+  const c = new Map();
+  rows.forEach(r => {
+    const v = (r[key] || '').trim();
+    if (!v || v === 'unclear') return;
+    c.set(v, (c.get(v) || 0) + 1);
+  });
+  if (!c.size) return { value: null, count: 0, total: 0 };
+  let best = null, bestN = 0;
+  c.forEach((n, v) => { if (n > bestN) { bestN = n; best = v; } });
+  return { value: best, count: bestN, total: rows.length };
+}
+
+// Map height_build free text to a normalised band by keyword presence.
+// Returns the most common normalised band, or null.
+function modalBuild(rows, key, lookups) {
+  const tags = [];
+  rows.forEach(r => {
+    const v = (r[key] || '').toLowerCase();
+    for (const [tag, regex] of lookups) {
+      if (regex.test(v)) tags.push(tag);
+    }
+  });
+  if (!tags.length) return { value: null, count: 0, total: rows.length };
+  const c = new Map();
+  tags.forEach(t => c.set(t, (c.get(t) || 0) + 1));
+  let best = null, bestN = 0;
+  c.forEach((n, v) => { if (n > bestN) { bestN = n; best = v; } });
+  return { value: best, count: bestN, total: rows.length };
+}
+
+const HERO_BUILD_LOOKUPS = [
+  ['tall', /\btall\b/],
+  ['broad / muscular', /\b(broad|muscul|athletic|built|bulky)\b/],
+  ['lean', /\b(lean|slim)\b/],
+];
+const HEROINE_BUILD_LOOKUPS = [
+  ['petite / small', /\b(petite|small|tiny|slight)\b/],
+  ['curvy', /\b(curv|voluptuous|hourglass)\b/],
+  ['slim / slender', /\b(slim|slender|thin|lithe)\b/],
+  ['tall', /\btall\b/],
+];
+
+function renderComposite() {
+  if (!filtered.length) return;
+
+  // Format an age range bucket into a human-readable phrase for prose.
+  // "22_25" -> "22 to 25", "30_plus" -> "thirty or older", etc.
+  const ageToPhrase = (v) => {
+    switch (v) {
+      case 'under_18': return 'under 18';
+      case '18_21':    return '18 to 21';
+      case '22_25':    return '22 to 25';
+      case '26_30':    return '26 to 30';
+      case '30_plus':  return 'thirty or older';
+      default:         return null;
+    }
+  };
+
+  // Heroine
+  const fAge   = modalValue(filtered, 'fmc_age_range');
+  const fOcc   = modalValue(filtered, 'fmc_occupation');
+  const fWealth= modalValue(filtered, 'fmc_wealth_origin');
+  const fInd   = modalValue(filtered, 'fmc_independence');
+  const fExp   = modalValue(filtered, 'fmc_experience_level');
+  const fMat   = modalValue(filtered, 'fmc_emotional_maturity');
+  const fBuild = modalBuild(filtered, 'fmc_height_build', HEROINE_BUILD_LOOKUPS);
+  const fTraits= extractTraits(filtered, ['fmc_personality_type','fmc_dominant_traits']).slice(0, 6);
+
+  // Hero
+  const hAge   = modalValue(filtered, 'mmc_age_range');
+  const hOcc   = modalValue(filtered, 'mmc_occupation');
+  const hWealth= modalValue(filtered, 'mmc_wealth_origin');
+  const hInd   = modalValue(filtered, 'mmc_independence');
+  const hExp   = modalValue(filtered, 'mmc_experience_level');
+  const hMat   = modalValue(filtered, 'mmc_emotional_maturity');
+  const hBuild = modalBuild(filtered, 'mmc_height_build', HERO_BUILD_LOOKUPS);
+  const hTraits= extractTraits(filtered, ['mmc_personality_type','mmc_dominant_traits']).slice(0, 6);
+
+  const renderOneLiner = (parts) => parts.filter(p => p).map(p =>
+    typeof p === 'string' ? p : `<em>${escapeHtml(p)}</em>`
+  ).join(' ');
+
+  // Heroine one-liner
+  const fOneLiner = renderOneLiner([
+    'She is',
+    fAge.value ? ageToPhrase(fAge.value) : null,
+    'and',
+    fWealth.value ? pretty(fWealth.value).toLowerCase().replace(/_/g, ' ') : 'of unclear background',
+    '— often a',
+    fOcc.value && fOcc.value !== 'unclear' ? fOcc.value.split(/[,/]/)[0].trim() : 'student',
+    fExp.value === 'innocent' || fExp.value === 'inexperienced' ? '— with little romantic experience to her name.' : '— navigating a story she did not see coming.',
+  ]);
+  document.getElementById('composite-fmc-oneliner').innerHTML = fOneLiner;
+
+  // Heroine details
+  const fmcDl = [
+    ['Age',          fAge,   v => ageToPhrase(v) || pretty(v)],
+    ['Wealth',       fWealth,v => pretty(v)],
+    ['Build',        fBuild, v => v],
+    ['Independence', fInd,   v => pretty(v)],
+    ['Experience',   fExp,   v => pretty(v)],
+    ['Emotional maturity', fMat, v => pretty(v)],
+  ];
+  document.getElementById('composite-fmc-dl').innerHTML = fmcDl.map(([k, m, fn]) => {
+    if (!m.value) return `<dt>${k}</dt><dd><em style="color:var(--ink-faint)">unclear</em></dd>`;
+    return `<dt>${k}</dt><dd>${escapeHtml(fn(m.value))}<span class="pct">${m.count}/${m.total}</span></dd>`;
+  }).join('');
+
+  document.getElementById('composite-fmc-pills').innerHTML = fTraits.length
+    ? fTraits.map(([t, n]) => `<span class="pill">${escapeHtml(t)} <span style="color:var(--ink-faint); font-size:11px; font-style:normal;">${n}</span></span>`).join('')
+    : '<em style="color:var(--ink-faint)">No recurring traits.</em>';
+
+  // Hero one-liner
+  const hOneLiner = renderOneLiner([
+    'He is',
+    hAge.value ? ageToPhrase(hAge.value) : null,
+    'and',
+    hWealth.value ? pretty(hWealth.value).toLowerCase().replace(/_/g, ' ') : 'of unclear means',
+    '—',
+    (hBuild.value || 'broadly built') + ',',
+    'and almost always',
+    hInd.value === 'fiercely_independent' ? 'fiercely independent.' : pretty(hInd.value || '').toLowerCase() + '.',
+  ]);
+  document.getElementById('composite-mmc-oneliner').innerHTML = hOneLiner;
+
+  // Hero details
+  const mmcDl = [
+    ['Age',          hAge,   v => ageToPhrase(v) || pretty(v)],
+    ['Wealth',       hWealth,v => pretty(v)],
+    ['Build',        hBuild, v => v],
+    ['Independence', hInd,   v => pretty(v)],
+    ['Experience',   hExp,   v => pretty(v)],
+    ['Emotional maturity', hMat, v => pretty(v)],
+  ];
+  document.getElementById('composite-mmc-dl').innerHTML = mmcDl.map(([k, m, fn]) => {
+    if (!m.value) return `<dt>${k}</dt><dd><em style="color:var(--ink-faint)">unclear</em></dd>`;
+    return `<dt>${k}</dt><dd>${escapeHtml(fn(m.value))}<span class="pct">${m.count}/${m.total}</span></dd>`;
+  }).join('');
+
+  document.getElementById('composite-mmc-pills').innerHTML = hTraits.length
+    ? hTraits.map(([t, n]) => `<span class="pill">${escapeHtml(t)} <span style="color:var(--ink-faint); font-size:11px; font-style:normal;">${n}</span></span>`).join('')
+    : '<em style="color:var(--ink-faint)">No recurring traits.</em>';
+}
+
+// =====================================================================
+// Render orchestration
+// =====================================================================
+function render() {
+  renderLede();
+  renderRelCharts();
+  renderCharCharts('fmc');
+  renderCharCharts('mmc');
+  renderTraitList('fmc');
+  renderTraitList('mmc');
+  renderPairCharts();
+  renderComposite();
+  renderCouples();
+}
+
+// =====================================================================
+// Boot
+// =====================================================================
+function showStatus(msg, isError = false) {
+  const el = document.getElementById('status');
+  el.classList.toggle('error', isError);
+  el.innerHTML = isError
+    ? msg
+    : `<span class="spinner"></span>${msg}`;
+}
+
+function bootWithCSV(text) {
+  try {
+    allRows = parseCSV(text);
+  } catch (e) {
+    showStatus(`Could not parse CSV: ${e.message}`, true);
+    return;
+  }
+  if (!allRows.length) {
+    showStatus('CSV is empty.', true);
+    return;
+  }
+  const needed = ['title', 'fmc_age_range', 'mmc_age_range', 'rel_dynamic'];
+  const missing = needed.filter(c => !(c in allRows[0]));
+  if (missing.length) {
+    showStatus(`CSV is missing expected columns: ${missing.join(', ')}.`, true);
+    return;
+  }
+  document.getElementById('status').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  populateFilters();
+  applyFilters();
+}
+
+// Auto-load CSV from same directory
+fetch(CSV_URL, { cache: 'no-cache' })
+  .then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.text();
+  })
+  .then(bootWithCSV)
+  .catch(err => {
+    showStatus(
+      `Could not auto-load <code>${CSV_URL}</code> (${err.message}). ` +
+      `Use the "upload a CSV manually" link in the footer below to load it from your computer.`,
+      true
+    );
+  });
+
+// Manual upload fallback
+document.getElementById('csv-upload').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => bootWithCSV(ev.target.result);
+  reader.readAsText(file);
+});
+</script>
+</body>
+</html>
