@@ -6,7 +6,7 @@ image:
 tags: research python claude_ai project romance smut fan-fiction books reading data statistics wattpad
 ---
 
-> TL;DR, you can find all the data and simplified take-aways at <u>[Wattpad Analysis](https://idleendeavor.com/wattpad-analysis.html)</u>. And yes, I am aware that AO3 is the go-to place for fan-fictions at the moment, but when I first had the idea; it was very much Wattpad. I might do the same data-analyis with AO3 at some point. (If you steal my idea, both sides of your pillow will be war for 7 years)
+> TL;DR, you can find all the data and simplified take-aways at <u>[Wattpad Analysis](https://idleendeavor.com/wattpad-analysis.html)</u>. And yes, I am aware that AO3 is the go-to place for fan-fictions at the moment, but when I first had the idea; it was very much Wattpad. I might do the same data-analyis with AO3 at some point. (If you steal my idea, both sides of your pillow will be warm for 7 years)
 
 I've had this idea at the back of my head and later in my 'sometime' todo list for years at this point, never got around to doing it, and I've always been bummed about that.
 
@@ -249,8 +249,8 @@ I started by using Wattpad's built in list of the 25 most popular books from the
     ],
 
 {% endraw %}
-
-
+<br>
+<br>
 To collect data on subjective points, I wrote another python script which sent excerpts (opening, four mid-slices and closing) to Claude Sonnet 4.6 via their API to fill out a fixed schema covering both protagonists and the relationship: age, occupation, wealth origin, personality, baggage, arc, dynamic, power balance, POV, heat level. Didn't end up costing that much actually. Here's all the code surrounding the AI matched fields:
 
 {% raw %}
@@ -275,10 +275,6 @@ To collect data on subjective points, I wrote another python script which sent e
         "rel_dynamic", "rel_meeting_context", "rel_power_balance",
         "rel_main_conflict", "rel_pov", "rel_heat_level",
     ]
-
-{% endraw %}
-
-{% raw %}
 
     Schema:
     {
@@ -325,8 +321,8 @@ To collect data on subjective points, I wrote another python script which sent e
     Excerpts from the book titled "{title}":
 
 {% endraw %}
-
-
+<br>
+<br>
 I've included some photos from the dashboard and terminal below.
 
 ![Python Script in Terminal](/images/wattpad-analysis-terminal.png)
