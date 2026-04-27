@@ -250,7 +250,6 @@ I started by using Wattpad's built in list of the 25 most popular books from the
 
 {% endraw %}
 <br>
-<br>
 To collect data on subjective points, I wrote another python script which sent excerpts (opening, four mid-slices and closing) to Claude Sonnet 4.6 via their API to fill out a fixed schema covering both protagonists and the relationship: age, occupation, wealth origin, personality, baggage, arc, dynamic, power balance, POV, heat level. Didn't end up costing that much actually. Here's all the code surrounding the AI matched fields:
 
 {% raw %}
@@ -275,6 +274,10 @@ To collect data on subjective points, I wrote another python script which sent e
         "rel_dynamic", "rel_meeting_context", "rel_power_balance",
         "rel_main_conflict", "rel_pov", "rel_heat_level",
     ]
+
+{% endraw %}
+<br>
+{% raw %}
 
     Schema:
     {
@@ -321,7 +324,6 @@ To collect data on subjective points, I wrote another python script which sent e
     Excerpts from the book titled "{title}":
 
 {% endraw %}
-<br>
 <br>
 I've included some photos from the dashboard and terminal below.
 
