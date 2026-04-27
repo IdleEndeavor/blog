@@ -69,6 +69,7 @@ You can find a much more polished display of the full data at [Wattpad Analysis]
 I started by using Wattpad's built in list of the 25 most popular books from the Romance category (excluding foreign language entries and getting the 26th and 27th entries instead), then I _acquiring_ epub exports of the books and then wrote a python scropt which counted regex-matched vocabulary on roughly 40 different trait categories. This gave me the basic traits and a solid base to start off of. Here's all the code surrounding the vocabulary that was matched:
 
 {% raw %}
+
     # ---- Personality vocabulary ----
     "confidence": [
         r"\bconfiden(?:t|ce|tly)\b", r"\bbold\b", r"\bassertive\b",
@@ -246,78 +247,85 @@ I started by using Wattpad's built in list of the 25 most popular books from the
         r"\bblush(?:ed|ing)?\b", r"\bheart raced\b", r"\bbreath(?:less|hitch)\b",
         r"\bbutterflies\b", r"\btingl(?:e|ed|ing)\b",
     ],
+
 {% endraw %}
+
 
 To collect data on subjective points, I wrote another python script which sent excerpts (opening, four mid-slices and closing) to Claude Sonnet 4.6 via their API to fill out a fixed schema covering both protagonists and the relationship: age, occupation, wealth origin, personality, baggage, arc, dynamic, power balance, POV, heat level. Didn't end up costing that much actually. Here's all the code surrounding the AI matched fields:
 
 {% raw %}
-FMC_FIELDS = [
-    "fmc_age_range", "fmc_occupation", "fmc_wealth_origin",
-    "fmc_personality_type", "fmc_independence", "fmc_emotional_maturity",
-    "fmc_experience_level", "fmc_dominant_traits",
-    "fmc_height_build", "fmc_hair", "fmc_eyes", "fmc_distinguishing_features",
-    "fmc_family_situation", "fmc_baggage", "fmc_arc",
-]
 
-MMC_FIELDS = [
-    "mmc_age_range", "mmc_occupation", "mmc_wealth_origin",
-    "mmc_personality_type", "mmc_independence", "mmc_emotional_maturity",
-    "mmc_experience_level", "mmc_dominant_traits",
-    "mmc_height_build", "mmc_hair", "mmc_eyes", "mmc_distinguishing_features",
-    "mmc_family_situation", "mmc_baggage", "mmc_arc",
-]
+    FMC_FIELDS = [
+        "fmc_age_range", "fmc_occupation", "fmc_wealth_origin",
+        "fmc_personality_type", "fmc_independence", "fmc_emotional_maturity",
+        "fmc_experience_level", "fmc_dominant_traits",
+        "fmc_height_build", "fmc_hair", "fmc_eyes", "fmc_distinguishing_features",
+        "fmc_family_situation", "fmc_baggage", "fmc_arc",
+    ]
 
-REL_FIELDS = [
-    "rel_dynamic", "rel_meeting_context", "rel_power_balance",
-    "rel_main_conflict", "rel_pov", "rel_heat_level",
-]
+    MMC_FIELDS = [
+        "mmc_age_range", "mmc_occupation", "mmc_wealth_origin",
+        "mmc_personality_type", "mmc_independence", "mmc_emotional_maturity",
+        "mmc_experience_level", "mmc_dominant_traits",
+        "mmc_height_build", "mmc_hair", "mmc_eyes", "mmc_distinguishing_features",
+        "mmc_family_situation", "mmc_baggage", "mmc_arc",
+    ]
+
+    REL_FIELDS = [
+        "rel_dynamic", "rel_meeting_context", "rel_power_balance",
+        "rel_main_conflict", "rel_pov", "rel_heat_level",
+    ]
+
 {% endraw %}
 
 {% raw %}
-Schema:
-{
-  "fmc_age_range": "under_18" | "18_21" | "22_25" | "26_30" | "30_plus" | "unclear",
-  "fmc_occupation": "<short lowercase label, e.g. 'student', 'waitress', 'intern', 'artist', 'unclear'>",
-  "fmc_wealth_origin": "poor" | "working_class" | "middle_class" | "wealthy" | "very_wealthy" | "unclear",
-  "fmc_personality_type": "<2-3 word snake_case label, e.g. 'shy_bookish', 'sassy_confident', 'guarded_wounded', 'fierce_ambitious'>",
-  "fmc_independence": "dependent" | "moderate" | "independent" | "fiercely_independent" | "unclear",
-  "fmc_emotional_maturity": "low" | "moderate" | "high" | "unclear",
-  "fmc_experience_level": "innocent" | "inexperienced" | "average" | "experienced" | "unclear",
-  "fmc_dominant_traits": "<<= 80 chars, 3 traits comma-separated, e.g. 'kind, stubborn, anxious'>",
-  "fmc_height_build": "<<= 40 chars, e.g. 'petite', 'tall and slim', 'curvy', 'unclear'>",
-  "fmc_hair": "<<= 30 chars, e.g. 'long dark', 'short blonde', 'red curls'>",
-  "fmc_eyes": "<<= 20 chars, e.g. 'brown', 'green', 'unclear'>",
-  "fmc_distinguishing_features": "<<= 80 chars or 'none'>",
-  "fmc_family_situation": "<<= 100 chars, brief on parents/siblings/home>",
-  "fmc_baggage": "<<= 100 chars, key trauma/wound/insecurity, or 'none'>",
-  "fmc_arc": "<<= 100 chars, what she learns/changes>",
 
-  "mmc_age_range": "under_18" | "18_21" | "22_25" | "26_30" | "30_plus" | "unclear",
-  "mmc_occupation": "<short lowercase label>",
-  "mmc_wealth_origin": "poor" | "working_class" | "middle_class" | "wealthy" | "very_wealthy" | "unclear",
-  "mmc_personality_type": "<2-3 word snake_case label, e.g. 'broody_protective', 'cocky_charming', 'cold_powerful', 'soft_devoted'>",
-  "mmc_independence": "dependent" | "moderate" | "independent" | "fiercely_independent" | "unclear",
-  "mmc_emotional_maturity": "low" | "moderate" | "high" | "unclear",
-  "mmc_experience_level": "innocent" | "inexperienced" | "average" | "experienced" | "unclear",
-  "mmc_dominant_traits": "<<= 80 chars, 3 traits comma-separated>",
-  "mmc_height_build": "<<= 40 chars>",
-  "mmc_hair": "<<= 30 chars>",
-  "mmc_eyes": "<<= 20 chars>",
-  "mmc_distinguishing_features": "<<= 80 chars or 'none'>",
-  "mmc_family_situation": "<<= 100 chars>",
-  "mmc_baggage": "<<= 100 chars or 'none'>",
-  "mmc_arc": "<<= 100 chars>",
+    Schema:
+    {
+    "fmc_age_range": "under_18" | "18_21" | "22_25" | "26_30" | "30_plus" | "unclear",
+    "fmc_occupation": "<short lowercase label, e.g. 'student', 'waitress', 'intern', 'artist', 'unclear'>",
+    "fmc_wealth_origin": "poor" | "working_class" | "middle_class" | "wealthy" | "very_wealthy" | "unclear",
+    "fmc_personality_type": "<2-3 word snake_case label, e.g. 'shy_bookish', 'sassy_confident', 'guarded_wounded', 'fierce_ambitious'>",
+    "fmc_independence": "dependent" | "moderate" | "independent" | "fiercely_independent" | "unclear",
+    "fmc_emotional_maturity": "low" | "moderate" | "high" | "unclear",
+    "fmc_experience_level": "innocent" | "inexperienced" | "average" | "experienced" | "unclear",
+    "fmc_dominant_traits": "<<= 80 chars, 3 traits comma-separated, e.g. 'kind, stubborn, anxious'>",
+    "fmc_height_build": "<<= 40 chars, e.g. 'petite', 'tall and slim', 'curvy', 'unclear'>",
+    "fmc_hair": "<<= 30 chars, e.g. 'long dark', 'short blonde', 'red curls'>",
+    "fmc_eyes": "<<= 20 chars, e.g. 'brown', 'green', 'unclear'>",
+    "fmc_distinguishing_features": "<<= 80 chars or 'none'>",
+    "fmc_family_situation": "<<= 100 chars, brief on parents/siblings/home>",
+    "fmc_baggage": "<<= 100 chars, key trauma/wound/insecurity, or 'none'>",
+    "fmc_arc": "<<= 100 chars, what she learns/changes>",
 
-  "rel_dynamic": "<short snake_case label, e.g. 'enemies_to_lovers', 'bad_boy_good_girl', 'boss_employee', 'forced_proximity', 'friends_to_lovers', 'second_chance', 'arranged_marriage', 'fake_dating', 'age_gap'>",
-  "rel_meeting_context": "<<= 80 chars, where/how they first meet>",
-  "rel_power_balance": "fmc_higher" | "mmc_higher" | "balanced" | "shifting" | "unclear",
-  "rel_main_conflict": "<<= 100 chars, what keeps them apart>",
-  "rel_pov": "fmc_first" | "fmc_third" | "mmc_first" | "alternating" | "unclear",
-  "rel_heat_level": "clean" | "mild" | "steamy" | "explicit" | "unclear"
-}
+    "mmc_age_range": "under_18" | "18_21" | "22_25" | "26_30" | "30_plus" | "unclear",
+    "mmc_occupation": "<short lowercase label>",
+    "mmc_wealth_origin": "poor" | "working_class" | "middle_class" | "wealthy" | "very_wealthy" | "unclear",
+    "mmc_personality_type": "<2-3 word snake_case label, e.g. 'broody_protective', 'cocky_charming', 'cold_powerful', 'soft_devoted'>",
+    "mmc_independence": "dependent" | "moderate" | "independent" | "fiercely_independent" | "unclear",
+    "mmc_emotional_maturity": "low" | "moderate" | "high" | "unclear",
+    "mmc_experience_level": "innocent" | "inexperienced" | "average" | "experienced" | "unclear",
+    "mmc_dominant_traits": "<<= 80 chars, 3 traits comma-separated>",
+    "mmc_height_build": "<<= 40 chars>",
+    "mmc_hair": "<<= 30 chars>",
+    "mmc_eyes": "<<= 20 chars>",
+    "mmc_distinguishing_features": "<<= 80 chars or 'none'>",
+    "mmc_family_situation": "<<= 100 chars>",
+    "mmc_baggage": "<<= 100 chars or 'none'>",
+    "mmc_arc": "<<= 100 chars>",
 
-Excerpts from the book titled "{title}":
+    "rel_dynamic": "<short snake_case label, e.g. 'enemies_to_lovers', 'bad_boy_good_girl', 'boss_employee', 'forced_proximity', 'friends_to_lovers', 'second_chance', 'arranged_marriage', 'fake_dating', 'age_gap'>",
+    "rel_meeting_context": "<<= 80 chars, where/how they first meet>",
+    "rel_power_balance": "fmc_higher" | "mmc_higher" | "balanced" | "shifting" | "unclear",
+    "rel_main_conflict": "<<= 100 chars, what keeps them apart>",
+    "rel_pov": "fmc_first" | "fmc_third" | "mmc_first" | "alternating" | "unclear",
+    "rel_heat_level": "clean" | "mild" | "steamy" | "explicit" | "unclear"
+    }
+
+    Excerpts from the book titled "{title}":
+
 {% endraw %}
+
 
 I've included some photos from the dashboard and terminal below.
 
