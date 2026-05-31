@@ -24,15 +24,15 @@ You may have to open the shortcut in your Shortcuts app and change the save loca
 
 ![Things 3 Exporter Save Location Change](/images/things3_exporter_iphone.png)
 
-<a href="/images/things3-exporter.shortcut" download class="download-btn">
+**<a href="/images/things3-exporter.shortcut" download class="download-btn">
   iOS Things 3 Exporter Shortcut
-</a><br>
-<a href="https://www.icloud.com/shortcuts/be7e5dc74ca749fd908502f967120cfc">
+</a>**<br>
+**<a href="https://www.icloud.com/shortcuts/be7e5dc74ca749fd908502f967120cfc">
   iOS Things 3 Exporter Shortcut iCloud Link
-</a><br>
-<a href="/images/things-viewer.html" download class="download-btn">
+</a>**<br>
+**<a href="/images/things-viewer.html" download class="download-btn">
   Things 3 Web Viewer HTML Download
-</a><br><br>
+</a><br>**
 
 My current set up involves an automation on iOS that periodically generates an export of Things3 and saves it to a Syncthing (Mobius Sync app) folder which syncs to my laptop so that I can open it right away when I need to view it on the big screen.
 
