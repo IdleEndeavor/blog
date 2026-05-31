@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Things — Local Viewer</title>
+
+<style>
+/* ── RESET & BASE ──────────────────────────── */
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+button { border: none; background: none; cursor: pointer; font: inherit; }
+
+:root {
+  --bg:         #2A2A2A;
+  --sidebar-bg: #1E1E1E;
+  --surface:    #313131;
+  --surface2:   #3A3A3A;
+  --surface3:   #484848;
+  --border:     rgba(255,255,255,0.07);
+  --text1:      #EFEFEF;
+  --text2:      #8A8A8A;
+  --text3:      #505050;
+  --accent:     #FF453A;
+  --accent-bg:  rgba(255,255,255,0.10);
+  --green:      #30D158;
+  --amber:      #FF9F0A;
+  --red:        #FF453A;
+  --sidebar-w:  250px;
+  --radius:     10px;
+  --radius-sm:  7px;
+}
+
+body {
+  font-family: -apple-system, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text1);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* scrollbars */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+* { scrollbar-width: thin; scrollbar-color: var(--surface3) transparent; }
+
+
+/* ── IMPORT SCREEN ─────────────────────────── */
+#import-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  animation: fadeIn 0.4s ease;
+}
+
+.import-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.import-logo .logo-blob {
+  width: 56px; height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.import-logo h1 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--text1) 30%, var(--text2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.import-logo h2 {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-top: 3px;
+  -webkit-text-fill-color: initial;
+}
+.import-logo h2 a, .sidebar-by a {
+  color: var(--text3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.import-logo h2 a:hover, .sidebar-by a:hover {
+  color: var(--text2);
+}
+.sidebar-by {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+#drop-zone {
+  width: 400px;
+  background: var(--surface);
+  border: 1.5px dashed var(--text3);
+  border-radius: 18px;
+  padding: 44px 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+#drop-zone:hover, #drop-zone.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  transform: translateY(-3px);
+}
+#drop-zone .drop-icon { font-size: 44px; display: block; margin-bottom: 14px; }
+#drop-zone h2 {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+#drop-zone p { font-size: 13.5px; color: var(--text2); line-height: 1.55; }
+#drop-zone strong { color: var(--accent); }
+#file-input { display: none; }
+
+.import-hint {
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+  line-height: 1.7;
+}
+
+
+/* ── APP SHELL ─────────────────────────────── */
+#app {
+  flex: 1;
+  display: none;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+
+/* ── SIDEBAR ───────────────────────────────── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100%;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.sidebar-top {
+  padding: 18px 14px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.sidebar-logo-blob {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-app-name {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+.sidebar-export-date {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 6px 16px;
+}
+
+.section-label {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 12px 8px 4px;
+  display: block;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  transition: background 0.1s, color 0.1s;
+  user-select: none;
+}
+.nav-item:hover { background: var(--surface); color: var(--text1); }
+.nav-item.active { background: rgba(255,255,255,0.10); color: var(--text1); }
+.nav-icon { font-size: 13px; width: 18px; text-align: center; flex-shrink: 0; line-height: 1; }
+.nav-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nav-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  background: var(--surface2);
+  color: var(--text3);
+  padding: 1px 6px;
+  border-radius: 20px;
+  min-width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.nav-item.active .nav-badge { background: rgba(255,255,255,0.12); color: var(--text2); }
+
+/* Area groups */
+.area-group { margin-bottom: 1px; }
+.area-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  user-select: none;
+}
+.area-header:hover { background: var(--surface); }
+.area-name-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  padding: 1px 0;
+}
+.area-emoji { font-size: 12px; flex-shrink: 0; }
+.area-name {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.area-name-btn:hover .area-name { color: var(--text2); }
+.area-chevron {
+  font-size: 9px;
+  color: var(--text3);
+  transition: transform 0.15s;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.area-chevron:hover { background: var(--surface2); color: var(--text2); }
+.area-group.collapsed .area-chevron { transform: rotate(-90deg); }
+.area-group.collapsed .area-children { display: none; }
+.area-children { padding-left: 4px; }
+.area-children .nav-icon { font-size: 8px; color: var(--text3); }
+.area-children .nav-item.active .nav-icon { color: var(--accent); }
+
+
+/* ── MAIN PANEL ────────────────────────────── */
+#main {
+  margin-left: var(--sidebar-w);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Topbar */
+#topbar {
+  padding: 11px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+#view-title {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-pills { display: flex; gap: 3px; flex-shrink: 0; }
+.filter-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 20px;
+  color: var(--text2);
+  transition: background 0.13s, color 0.13s;
+}
+.filter-pill:hover { background: var(--surface); color: var(--text1); }
+.filter-pill.active { background: rgba(255,255,255,0.12); color: var(--text1); }
+
+.search-wrap { position: relative; flex-shrink: 0; }
+.search-ico {
+  position: absolute; left: 9px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3); font-size: 12px;
+  pointer-events: none;
+}
+#search {
+  font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+  font-size: 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text1);
+  padding: 6px 12px 6px 28px;
+  width: 176px;
+  outline: none;
+  transition: border-color 0.15s, width 0.2s;
+}
+#search::placeholder { color: var(--text3); }
+#search:focus { border-color: rgba(255,255,255,0.25); width: 220px; }
+
+.reimport-btn {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text2);
+  transition: background 0.13s, color 0.13s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.reimport-btn:hover { background: var(--surface2); color: var(--text1); }
+
+/* Content */
+#content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 28px 16px;
+}
+
+/* Stats bar */
+#statsbar {
+  padding: 8px 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.stat { display: flex; align-items: center; gap: 5px; }
+.stat-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+
+/* ── CONTENT COMPONENTS ────────────────────── */
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 10px;
+  color: var(--text3);
+  text-align: center;
+}
+.empty-state .es-icon { font-size: 38px; }
+.empty-state p { font-size: 13.5px; }
+
+/* Project section */
+.project-section { margin-bottom: 28px; }
+.project-section + .project-section {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+.proj-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.proj-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--text2);
+  margin-top: 5px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px;
+  font-weight: 900;
+  color: transparent;
+}
+.proj-dot.completed { background: var(--green); border-color: var(--green); color: white; }
+.proj-dot.canceled { background: var(--surface3); border-color: var(--surface3); }
+.proj-header-text { flex: 1; min-width: 0; }
+.proj-title {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: color 0.12s;
+}
+.proj-title:hover { color: var(--accent); }
+.proj-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: var(--text3);
+}
+.proj-meta .deadline { color: var(--red); }
+
+.proj-notes {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--text2);
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.proj-notes a { color: var(--accent); text-decoration: none; }
+.proj-notes a:hover { text-decoration: underline; }
+
+/* Heading group */
+.group-heading {
+  font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: var(--text3);
+  padding: 14px 0 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2px;
+}
+
+/* Todo item */
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.1s, padding 0.1s, margin 0.1s;
+  user-select: none;
+}
+.todo-item:hover, .todo-item.is-expanded {
+  background: var(--surface);
+  margin: 0 -10px;
+  padding: 7px 10px;
+}
+
+.todo-circle {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--text3);
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+  transition: background 0.12s, border-color 0.12s;
+}
+.todo-item.completed .todo-circle {
+  background: var(--green); border-color: var(--green); color: white;
+}
+.todo-item.canceled .todo-circle {
+  background: var(--surface3); border-color: var(--surface3); color: var(--text3);
+}
+
+.todo-body { flex: 1; min-width: 0; }
+.todo-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text1);
+  line-height: 1.4;
+  word-break: break-word;
+}
+.todo-item.completed .todo-title,
+.todo-item.canceled .todo-title {
+  text-decoration: line-through;
+  color: var(--text3);
+}
+
+.todo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+.chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+}
+.chip-tag      { background: rgba(245,164,66,0.11); color: var(--amber);  border-color: rgba(245,164,66,0.18); }
+.chip-deadline { background: rgba(226,88,88,0.11);  color: var(--red);    border-color: rgba(226,88,88,0.18); }
+.chip-date     { background: rgba(91,130,240,0.11); color: var(--accent); border-color: rgba(91,130,240,0.18); }
+.chip-someday  { background: rgba(255,255,255,0.04); color: var(--text3); border-color: var(--border); }
+.chip-project  { background: rgba(255,255,255,0.04); color: var(--text3); border-color: var(--border); font-style: italic; }
+
+.todo-note-preview {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Expand panel */
+.expand-panel {
+  display: none;
+  margin: 5px 0 8px 28px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  animation: slideDown 0.15s ease;
+}
+.expand-panel.open { display: block; }
+@keyframes slideDown { from { opacity:0; transform: translateY(-4px); } to { opacity:1; transform: none; } }
+
+.expand-notes {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.expand-notes a { color: var(--accent); text-decoration: none; }
+.expand-notes a:hover { text-decoration: underline; }
+
+.expand-divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+.checklist { display: flex; flex-direction: column; gap: 4px; }
+.cl-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text2);
+}
+.cl-item.done { color: var(--text3); text-decoration: line-through; }
+.cl-box {
+  width: 14px; height: 14px;
+  border: 1.5px solid var(--text3);
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+}
+.cl-item.done .cl-box { background: var(--green); border-color: var(--green); color: white; }
+</style>
+</head>
+<body>
+
+<!-- ── IMPORT SCREEN ─── -->
+<div id="import-screen">
+  <div class="import-logo">
+    <div class="logo-blob">
+      <svg width="54" height="54" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 18 C4 10 10 4 18 4 L34 4 C42 4 48 10 48 18 L48 38 C48 44 44 48 38 48 L18 48 C10 48 4 42 4 34 Z" stroke="#4A90E2" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <path d="M15 28 L23 38 L46 12" stroke="#4A90E2" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Things Web Viewer</h1>
+      <h2><a href="https://idleendeavor.com" target="_blank" rel="noopener">by IdleEndeavor</a></h2>
+    </div>
+  </div>
+  <div id="drop-zone">
+    <span class="drop-icon">📂</span>
+    <h2>Import your Things export</h2>
+    <p>Drag &amp; drop your export file here<br>or <strong>click to browse</strong></p>
+  </div>
+  <p class="import-hint">Supports .txt or .json exports from the Things 3 iOS Shortcut</p>
+  <input type="file" id="file-input" accept=".json,.txt">
+</div>
+
+<!-- ── APP ─── -->
+<div id="app">
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo-blob">
+        <svg width="20" height="20" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 18 C4 10 10 4 18 4 L34 4 C42 4 48 10 48 18 L48 38 C48 44 44 48 38 48 L18 48 C10 48 4 42 4 34 Z" stroke="#4A90E2" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <path d="M15 28 L23 38 L46 12" stroke="#4A90E2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div>
+        <div class="sidebar-app-name">Things Web Viewer</div>
+        <div class="sidebar-by"><a href="https://idleendeavor.com" target="_blank" rel="noopener">by IdleEndeavor</a></div>
+        <div class="sidebar-export-date" id="export-date"></div>
+      </div>
+    </div>
+    <div class="sidebar-scroll">
+      <span class="section-label">Smart Lists</span>
+      <div class="nav-item" data-view="inbox">
+        <span class="nav-icon">📥</span><span class="nav-label">Inbox</span>
+        <span class="nav-badge" id="badge-inbox"></span>
+      </div>
+      <div class="nav-item" data-view="today">
+        <span class="nav-icon">⭐</span><span class="nav-label">Today</span>
+        <span class="nav-badge" id="badge-today"></span>
+      </div>
+      <div class="nav-item" data-view="upcoming">
+        <span class="nav-icon">📅</span><span class="nav-label">Upcoming</span>
+        <span class="nav-badge" id="badge-upcoming"></span>
+      </div>
+      <div class="nav-item" data-view="anytime">
+        <span class="nav-icon" style="font-size:16px;line-height:1">∞</span><span class="nav-label">Anytime</span>
+        <span class="nav-badge" id="badge-anytime"></span>
+      </div>
+      <div class="nav-item" data-view="someday">
+        <span class="nav-icon">🌤</span><span class="nav-label">Someday</span>
+        <span class="nav-badge" id="badge-someday"></span>
+      </div>
+      <div class="nav-item" data-view="logbook">
+        <span class="nav-icon">📖</span><span class="nav-label">Logbook</span>
+        <span class="nav-badge" id="badge-logbook"></span>
+      </div>
+      <span class="section-label">Areas</span>
+      <div id="areas-nav"></div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <div id="main">
+    <div id="topbar">
+      <div id="view-title">Things</div>
+      <div class="filter-pills">
+        <button class="filter-pill active" data-filter="open">Open</button>
+        <button class="filter-pill" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="completed">Done</button>
+      </div>
+      <div class="search-wrap">
+        <span class="search-ico">🔍</span>
+        <input type="text" id="search" placeholder="Search…">
+      </div>
+      <button class="reimport-btn" id="reimport-btn">↑ Import</button>
+    </div>
+    <div id="content">
+      <div class="empty-state">
+        <div class="es-icon">✨</div>
+        <p>Select a list to begin</p>
+      </div>
+    </div>
+    <div id="statsbar">
+      <span class="stat">
+        <span class="stat-dot" style="background:var(--accent)"></span>
+        <span id="stat-open">—</span>
+      </span>
+      <span class="stat">
+        <span class="stat-dot" style="background:var(--green)"></span>
+        <span id="stat-done">—</span>
+      </span>
+      <span class="stat">
+        <span class="stat-dot" style="background:var(--surface3)"></span>
+        <span id="stat-total">—</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+const S = {
+  data: null,
+  view: 'today',   // string (smart list key) | {type:'area',id} | {type:'project',id}
+  filter: 'open',  // 'open' | 'all' | 'completed'
+  search: '',
+  expanded: new Set(),
+};
+
+
+/* ═══════════════════════════════════════════
+   DATA HELPERS
+═══════════════════════════════════════════ */
+function parseExport(raw) {
+  // Shortcuts embeds literal newlines inside JSON strings (invalid JSON).
+  // Replacing all \n with \\n makes the file parseable.
+  return JSON.parse(raw.replace(/\n/g, '\\n'));
+}
+
+function parseDate(str) {
+  if (!str) return null;
+  const m = str.match(/(\d{1,2})\s+(\w+)\s+(\d{4})/);
+  if (!m) return null;
+  const d = new Date(`${m[2]} ${m[1]}, ${m[3]}`);
+  return isNaN(d) ? null : d;
+}
+
+function todayMidnight() {
+  const d = new Date(); d.setHours(0,0,0,0); return d;
+}
+
+function isToday(str) {
+  const d = parseDate(str); if (!d) return false;
+  return d.toDateString() === new Date().toDateString();
+}
+function isTodayOrPast(str) {
+  const d = parseDate(str); if (!d) return false;
+  return d <= new Date();
+}
+function isFuture(str) {
+  const d = parseDate(str); if (!d) return false;
+  const eod = new Date(); eod.setHours(23,59,59,999);
+  return d > eod;
+}
+
+function isInbox(t) {
+  const v = t.is_inbox;
+  return v === true || v === 'Yes' || v === 'yes' || v === 'true' || v === 1 || v === '1';
+}
+function isOpen(t)     { return t.status === 'Open'; }
+function isDone(t)     { return t.status === 'Completed'; }
+function isClosed(t)   { return t.status === 'Completed' || t.status === 'Canceled'; }
+
+function parseTags(v) {
+  return String(v || '').split(',').map(s => s.trim()).filter(Boolean);
+}
+
+function parseChecklist(str) {
+  if (!str) return [];
+  return String(str).split('\n').map(l => l.trim()).filter(Boolean).map(l => ({
+    done: /^-\s*\[[xX]\]/.test(l),
+    text: l.replace(/^-\s*\[[xX ]\]\s*/, '').trim(),
+  })).filter(c => c.text);
+}
+
+function categorize(todos) {
+  const inbox=[], today=[], upcoming=[], anytime=[], someday=[], logbook=[];
+  for (const t of todos) {
+    if (isClosed(t))  { logbook.push(t); continue; }
+    if (isInbox(t))   { inbox.push(t); continue; }
+    const sd = t.start_date || '', dl = t.deadline || '', start = t.start || '';
+    if ((start === 'On Date' && isTodayOrPast(sd)) || (dl && isTodayOrPast(dl))) { today.push(t); continue; }
+    if (start === 'On Date' && isFuture(sd)) { upcoming.push(t); continue; }
+    if (start === 'Someday') { someday.push(t); continue; }
+    anytime.push(t);
+  }
+  return { inbox, today, upcoming, anytime, someday, logbook };
+}
+
+function fmtDate(str) {
+  const d = parseDate(str); if (!d) return str;
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function esc(s) {
+  return String(s || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function linkify(s) {
+  return s.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+}
+
+
+/* ═══════════════════════════════════════════
+   RENDERING
+═══════════════════════════════════════════ */
+function renderChips(t, showProject) {
+  let h = '';
+  for (const tag of parseTags(t.tags))
+    h += `<span class="chip chip-tag">${esc(tag)}</span>`;
+  if (t.deadline)
+    h += `<span class="chip chip-deadline">⚑ ${fmtDate(t.deadline)}</span>`;
+  if (t.start_date && t.start === 'On Date')
+    h += `<span class="chip chip-date">📅 ${fmtDate(t.start_date)}</span>`;
+  if (t.start === 'Someday')
+    h += `<span class="chip chip-someday">Someday</span>`;
+  if (showProject && t._projTitle)
+    h += `<span class="chip chip-project">${esc(t._projTitle)}</span>`;
+  return h;
+}
+
+function renderTodoItem(t, showProject) {
+  const status = isDone(t) ? 'completed' : t.status === 'Canceled' ? 'canceled' : '';
+  const checkMark = isDone(t) ? '✓' : t.status === 'Canceled' ? '✕' : '';
+  const chips = renderChips(t, showProject);
+  const notes = (t.notes || '').trim();
+  const cl = parseChecklist(t.checklist);
+  const hasExpand = notes || cl.length > 0;
+  const isExp = S.expanded.has(t.id);
+
+  const preview = notes
+    ? `<div class="todo-note-preview">${esc(notes.replace(/\n/g,' ').substring(0,90))}${notes.length > 90 ? '…' : ''}</div>`
+    : '';
+
+  let panelInner = '';
+  if (notes) panelInner += `<div class="expand-notes">${linkify(esc(notes))}</div>`;
+  if (notes && cl.length) panelInner += `<div class="expand-divider"></div>`;
+  if (cl.length) {
+    panelInner += `<div class="checklist">` +
+      cl.map(c => `<div class="cl-item ${c.done?'done':''}">
+        <div class="cl-box">${c.done?'✓':''}</div><span>${esc(c.text)}</span>
+      </div>`).join('') +
+      `</div>`;
+  }
+
+  return `
+    <div class="todo-item ${status}${isExp ? ' is-expanded' : ''}" data-id="${t.id}"${hasExpand ? ' data-ex' : ''}>
+      <div class="todo-circle">${checkMark}</div>
+      <div class="todo-body">
+        <div class="todo-title">${esc(t.title || '(untitled)')}</div>
+        ${chips  ? `<div class="todo-chips">${chips}</div>` : ''}
+        ${preview}
+      </div>
+    </div>
+    ${hasExpand ? `<div class="expand-panel${isExp ? ' open' : ''}" data-panel="${t.id}">${panelInner}</div>` : ''}
+  `;
+}
+
+function groupByHeading(todos) {
+  const map = new Map();
+  for (const t of todos) {
+    const h = t.heading ? t.heading.trim() : '';
+    if (!map.has(h)) map.set(h, []);
+    map.get(h).push(t);
+  }
+  // '' first, then named headings
+  const sorted = [
+    ...(map.has('') ? [['', map.get('')]] : []),
+    ...[...map.entries()].filter(([k]) => k !== ''),
+  ];
+  return sorted;
+}
+
+function renderProjectSection(proj, todos, showHeader) {
+  const status = isDone(proj) ? 'completed' : proj.status === 'Canceled' ? 'canceled' : '';
+  const dotCheck = status === 'completed' ? '✓' : '';
+  const notes = (proj.notes || '').trim();
+
+  let todosHtml = '';
+  for (const [heading, items] of groupByHeading(todos)) {
+    if (heading) todosHtml += `<div class="group-heading">${esc(heading)}</div>`;
+    todosHtml += items.map(t => renderTodoItem(t, false)).join('');
+  }
+
+  let header = '';
+  if (showHeader) {
+    header = `
+      <div class="proj-header">
+        <div class="proj-dot ${status}">${dotCheck}</div>
+        <div class="proj-header-text">
+          <div class="proj-title" data-nav-proj="${proj.id}">${esc(proj.title)}</div>
+          <div class="proj-meta">
+            <span>${proj.status}</span>
+            ${proj.deadline ? `<span class="deadline">⚑ ${fmtDate(proj.deadline)}</span>` : ''}
+            <span>${todos.length} item${todos.length !== 1 ? 's' : ''}</span>
+          </div>
+        </div>
+      </div>
+      ${notes ? `<div class="proj-notes">${linkify(esc(notes))}</div>` : ''}
+    `;
+  }
+
+  const emptyMsg = !todosHtml
+    ? `<div style="color:var(--text3);font-size:13px;padding:8px 0">No items</div>`
+    : '';
+
+  return `<div class="project-section">${header}${todosHtml}${emptyMsg}</div>`;
+}
+
+
+/* ═══════════════════════════════════════════
+   MAIN RENDER
+═══════════════════════════════════════════ */
+function render() {
+  if (!S.data) return;
+  const { areas, projects, todos } = S.data;
+  const projMap = Object.fromEntries(projects.map(p => [p.id, p]));
+
+  // Annotate todos with project title for display in smart lists
+  for (const t of todos) {
+    t._projTitle = (projMap[t.parent_id] || {}).title || '';
+  }
+
+  const lists = categorize(todos);
+
+  function applyFilter(arr) {
+    let r = arr;
+    if (S.filter === 'open')      r = r.filter(isOpen);
+    if (S.filter === 'completed') r = r.filter(isClosed);
+    if (S.search) {
+      const q = S.search.toLowerCase();
+      r = r.filter(t =>
+        (t.title||'').toLowerCase().includes(q) ||
+        (t.notes||'').toLowerCase().includes(q) ||
+        (t.tags||'').toLowerCase().includes(q)
+      );
+    }
+    return r;
+  }
+
+  const content = document.getElementById('content');
+  const viewTitle = document.getElementById('view-title');
+
+  // ── Smart lists ──────────────────────────────
+  const smartDefs = {
+    inbox:    { icon:'📥', label:'Inbox',    pool: lists.inbox },
+    today:    { icon:'⭐', label:'Today',    pool: lists.today },
+    upcoming: { icon:'📅', label:'Upcoming', pool: lists.upcoming },
+    anytime:  { icon:'∞',  label:'Anytime',  pool: lists.anytime },
+    someday:  { icon:'🌤', label:'Someday',  pool: lists.someday },
+    logbook:  { icon:'📖', label:'Logbook',  pool: lists.logbook },
+  };
+
+  if (typeof S.view === 'string' && smartDefs[S.view]) {
+    const def = smartDefs[S.view];
+    viewTitle.textContent = `${def.label}`;
+    const filtered = applyFilter(def.pool);
+
+    if (!filtered.length) {
+      content.innerHTML = `<div class="empty-state"><div class="es-icon">✨</div><p>Nothing here</p></div>`;
+    } else {
+      // Group by project for readability
+      const buckets = new Map();
+      const NONE = '__none__';
+      for (const t of filtered) {
+        const k = t.parent_id || NONE;
+        if (!buckets.has(k)) buckets.set(k, []);
+        buckets.get(k).push(t);
+      }
+      let html = '';
+      // un-parented first
+      if (buckets.has(NONE)) {
+        html += buckets.get(NONE).map(t => renderTodoItem(t, true)).join('');
+      }
+      for (const [pid, items] of buckets) {
+        if (pid === NONE) continue;
+        const proj = projMap[pid];
+        html += `<div class="group-heading">${esc(proj ? proj.title : 'Unknown project')}</div>`;
+        html += items.map(t => renderTodoItem(t, false)).join('');
+      }
+      content.innerHTML = html;
+    }
+  }
+
+  // ── Area view ────────────────────────────────
+  else if (S.view && S.view.type === 'area') {
+    const areaMap = Object.fromEntries(areas.map(a => [a.id, a]));
+    const area = areaMap[S.view.id];
+    if (!area) return;
+    viewTitle.textContent = area.title;
+
+    const areaProjects = projects.filter(p => p.parent_id === S.view.id);
+    let html = '';
+    for (const proj of areaProjects) {
+      const projTodos = applyFilter(todos.filter(t => t.parent_id === proj.id));
+      html += renderProjectSection(proj, projTodos, true);
+    }
+    const directTodos = applyFilter(todos.filter(t => t.parent_id === S.view.id));
+    if (directTodos.length) {
+      html += directTodos.map(t => renderTodoItem(t, false)).join('');
+    }
+    if (!html) html = `<div class="empty-state"><div class="es-icon">📁</div><p>Nothing to show</p></div>`;
+    content.innerHTML = html;
+  }
+
+  // ── Project view ─────────────────────────────
+  else if (S.view && S.view.type === 'project') {
+    const proj = projMap[S.view.id];
+    if (!proj) return;
+    viewTitle.textContent = proj.title;
+    const projTodos = applyFilter(todos.filter(t => t.parent_id === proj.id));
+    content.innerHTML = renderProjectSection(proj, projTodos, true);
+  }
+
+  // Bind expand/collapse clicks on todos
+  content.querySelectorAll('[data-ex]').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.id;
+      const panel = content.querySelector(`[data-panel="${id}"]`);
+      if (!panel) return;
+      const opening = !panel.classList.contains('open');
+      panel.classList.toggle('open', opening);
+      el.classList.toggle('is-expanded', opening);
+      if (opening) S.expanded.add(id); else S.expanded.delete(id);
+    });
+  });
+
+  // Bind project-title clicks (navigate into project from area/smart-list view)
+  content.querySelectorAll('[data-nav-proj]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      navigate({ type: 'project', id: el.dataset.navProj });
+    });
+  });
+
+  // Stats
+  const openN  = todos.filter(isOpen).length;
+  const doneN  = todos.filter(isDone).length;
+  document.getElementById('stat-open').textContent  = `${openN} open`;
+  document.getElementById('stat-done').textContent  = `${doneN} completed`;
+  document.getElementById('stat-total').textContent = `${todos.length} total`;
+}
+
+
+/* ═══════════════════════════════════════════
+   SIDEBAR RENDER
+═══════════════════════════════════════════ */
+function renderSidebar() {
+  if (!S.data) return;
+  const { areas, projects, todos } = S.data;
+  const projMap = Object.fromEntries(projects.map(p => [p.id, p]));
+  const lists = categorize(todos);
+
+  // Badges (open count only; logbook shows all)
+  const b = (id, n) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = n > 0 ? n : '';
+  };
+  b('badge-inbox',    lists.inbox.filter(isOpen).length);
+  b('badge-today',    lists.today.filter(isOpen).length);
+  b('badge-upcoming', lists.upcoming.filter(isOpen).length);
+  b('badge-anytime',  lists.anytime.filter(isOpen).length);
+  b('badge-someday',  lists.someday.filter(isOpen).length);
+  b('badge-logbook',  lists.logbook.length);
+
+  document.getElementById('export-date').textContent = S.data.exported_at || '';
+
+  const nav = document.getElementById('areas-nav');
+  nav.innerHTML = '';
+
+  for (const area of areas) {
+    const areaProjects = projects.filter(p => p.parent_id === area.id);
+    const openCount = todos.filter(t => {
+      if (!isOpen(t) || isInbox(t)) return false;
+      if (t.parent_id === area.id) return true;
+      const p = projMap[t.parent_id];
+      return p && p.parent_id === area.id;
+    }).length;
+
+    // Extract leading emoji from area title
+    const emMatch = area.title.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F|[\u{1F300}-\u{1FAFF}][\u{FE00}-\u{FEFF}]?)/u);
+    const emoji   = emMatch ? emMatch[0] : '📁';
+    const cleanName = area.title.replace(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F|[\u{1F300}-\u{1FAFF}][\u{FE00}-\u{FEFF}]?)\s*/u, '');
+
+    const grp = document.createElement('div');
+    grp.className = 'area-group';
+    grp.dataset.areaId = area.id;
+
+    grp.innerHTML = `
+      <div class="area-header">
+        <div class="area-name-btn" data-nav-area="${area.id}">
+          <span class="area-emoji">${emoji}</span>
+          <span class="area-name">${esc(cleanName)}</span>
+        </div>
+        <span class="area-chevron" title="Toggle">▾</span>
+      </div>
+      <div class="area-children">
+        ${areaProjects.map(p => {
+          const cnt = todos.filter(t => t.parent_id === p.id && isOpen(t)).length;
+          const statusSuffix = p.status === 'Completed' ? ' ✓' : p.status === 'Canceled' ? ' ✕' : '';
+          return `<div class="nav-item" data-view-proj="${p.id}">
+            <span class="nav-icon" style="font-size:7px">●</span>
+            <span class="nav-label">${esc(p.title)}${statusSuffix}</span>
+            ${cnt ? `<span class="nav-badge">${cnt}</span>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+
+    // Chevron = toggle collapse
+    grp.querySelector('.area-chevron').addEventListener('click', e => {
+      e.stopPropagation();
+      grp.classList.toggle('collapsed');
+    });
+
+    // Area name = navigate to area
+    grp.querySelector('.area-name-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      navigate({ type: 'area', id: area.id });
+    });
+
+    // Project clicks
+    grp.querySelectorAll('[data-view-proj]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        navigate({ type: 'project', id: el.dataset.viewProj });
+      });
+    });
+
+    nav.appendChild(grp);
+  }
+
+  // Loose projects (no area or area not found)
+  const areaIds = new Set(areas.map(a => a.id));
+  const looseProjects = projects.filter(p => !areaIds.has(p.parent_id));
+  if (looseProjects.length) {
+    const lbl = document.createElement('span');
+    lbl.className = 'section-label'; lbl.textContent = 'No Area';
+    nav.appendChild(lbl);
+    for (const p of looseProjects) {
+      const cnt = todos.filter(t => t.parent_id === p.id && isOpen(t)).length;
+      const el = document.createElement('div');
+      el.className = 'nav-item'; el.dataset.viewProj = p.id;
+      el.innerHTML = `<span class="nav-icon" style="font-size:7px">●</span>
+        <span class="nav-label">${esc(p.title)}</span>
+        ${cnt ? `<span class="nav-badge">${cnt}</span>` : ''}`;
+      el.addEventListener('click', () => navigate({ type: 'project', id: p.id }));
+      nav.appendChild(el);
+    }
+  }
+}
+
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+function navigate(view) {
+  S.view = view;
+  // Don't clear expand state on navigation so reading state is preserved on filter change;
+  // but do clear on view change to avoid stale panels
+  S.expanded.clear();
+  syncActiveNav();
+  render();
+}
+
+function syncActiveNav() {
+  document.querySelectorAll('.nav-item, [data-view]').forEach(el => el.classList.remove('active'));
+  if (typeof S.view === 'string') {
+    document.querySelector(`[data-view="${S.view}"]`)?.classList.add('active');
+  } else if (S.view?.type === 'project') {
+    document.querySelector(`[data-view-proj="${S.view.id}"]`)?.classList.add('active');
+  }
+}
+
+
+/* ═══════════════════════════════════════════
+   EVENT WIRING
+═══════════════════════════════════════════ */
+function initEvents() {
+  // Smart list nav
+  document.querySelectorAll('[data-view]').forEach(el =>
+    el.addEventListener('click', () => navigate(el.dataset.view))
+  );
+
+  // Filter pills
+  document.querySelectorAll('.filter-pill').forEach(el =>
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      S.filter = el.dataset.filter;
+      render();
+    })
+  );
+
+  // Search
+  let searchTimer;
+  document.getElementById('search').addEventListener('input', e => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { S.search = e.target.value; render(); }, 120);
+  });
+
+  // Keyboard shortcut: / to focus search
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+      e.preventDefault();
+      document.getElementById('search').focus();
+    }
+    if (e.key === 'Escape') document.getElementById('search').blur();
+  });
+
+  // Re-import button
+  document.getElementById('reimport-btn').addEventListener('click', () =>
+    document.getElementById('file-input').click()
+  );
+
+  // File input (shared by both import screen and re-import button)
+  const fi = document.getElementById('file-input');
+  fi.addEventListener('change', e => {
+    const f = e.target.files?.[0];
+    if (f) loadFile(f);
+    fi.value = '';
+  });
+
+  // Import screen drop zone
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('click', () => fi.click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    const f = e.dataTransfer.files?.[0];
+    if (f) loadFile(f);
+  });
+
+  // Global drag-drop (re-import while app is open)
+  document.addEventListener('dragover', e => e.preventDefault());
+  document.addEventListener('drop', e => {
+    e.preventDefault();
+    if (!S.data) return;
+    const f = e.dataTransfer.files?.[0];
+    if (f) loadFile(f);
+  });
+}
+
+
+/* ═══════════════════════════════════════════
+   FILE LOADING
+═══════════════════════════════════════════ */
+function loadFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = parseExport(e.target.result);
+      if (!data.areas || !data.projects || !data.todos) {
+        throw new Error('Unexpected structure — is this a Things export?');
+      }
+      S.data    = data;
+      S.view    = 'today';
+      S.filter  = 'open';
+      S.search  = '';
+      S.expanded.clear();
+
+      document.getElementById('import-screen').style.display = 'none';
+      const app = document.getElementById('app');
+      app.style.display = 'flex';
+
+      // Reset search input
+      document.getElementById('search').value = '';
+
+      // Reset filter pills
+      document.querySelectorAll('.filter-pill').forEach(p =>
+        p.classList.toggle('active', p.dataset.filter === 'open')
+      );
+
+      renderSidebar();
+      syncActiveNav();
+      render();
+    } catch (err) {
+      alert(`Could not load file:\n\n${err.message}\n\nMake sure it's a valid Things 3 export.`);
+    }
+  };
+  reader.readAsText(file);
+}
+
+
+/* ── GO ── */
+initEvents();
+</script>
+</body>
+</html>
